@@ -16,7 +16,11 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 
-    private final int B_WIDTH = 300;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4250322662900891302L;
+	private final int B_WIDTH = 300;
     private final int B_HEIGHT = 300;
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 900;
@@ -62,7 +66,7 @@ public class Board extends JPanel implements ActionListener {
         ImageIcon iid = new ImageIcon("resources/dot.png");
         ball = iid.getImage();
 
-        ImageIcon iia = new ImageIcon("resources/apple.png");
+        ImageIcon iia = new ImageIcon("resources/apple-r.png");
         apple = iia.getImage();
 
         ImageIcon iih = new ImageIcon("resources/head.png");
