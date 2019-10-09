@@ -1,7 +1,7 @@
 package iul.ista.pi.snake;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
-
+//teste
 public class Snake extends JFrame {
 
     /**
