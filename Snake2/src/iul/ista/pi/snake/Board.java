@@ -20,12 +20,12 @@ public class Board extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 4250322662900891302L;
-	private final int B_WIDTH = 300;
-    private final int B_HEIGHT = 300;
+	private final int B_WIDTH = 350;
+    private final int B_HEIGHT = 350;
     private final int DOT_SIZE = 10;
-    private final int ALL_DOTS = 900;
+    private final int ALL_DOTS = 1225;
     private final int RAND_POS = 29;
-    private final int DELAY = 140;
+    private final int DELAY = 130;
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
@@ -53,7 +53,7 @@ public class Board extends JPanel implements ActionListener {
     private void initBoard() {
 
         addKeyListener(new TAdapter());
-        setBackground(Color.black);
+        setBackground(Color.GRAY);
         setFocusable(true);
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
@@ -171,19 +171,19 @@ public class Board extends JPanel implements ActionListener {
         }
 
         if (y[0] >= B_HEIGHT) {
-            inGame = false;
+            y[0]=0;            
         }
 
         if (y[0] < 0) {
-            inGame = false;
+        	y[0] = B_HEIGHT;
         }
 
         if (x[0] >= B_WIDTH) {
-            inGame = false;
+            x[0] = 0;
         }
 
         if (x[0] < 0) {
-            inGame = false;
+            x[0] = B_WIDTH;
         }
         
         if (!inGame) {
