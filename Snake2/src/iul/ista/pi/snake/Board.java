@@ -20,19 +20,19 @@ public class Board extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 4250322662900891302L;
-	private final int B_WIDTH = 300;
-    private final int B_HEIGHT = 300;
-    private final int DOT_SIZE = 10;
-    private final int ALL_DOTS = 900;
-    private final int RAND_POS = 29;
-    private final int DELAY = 140;
+	public static final int B_WIDTH = 350;
+    public static final int B_HEIGHT = 350;
+    public static final int DOT_SIZE = 10;
+    public static final int ALL_DOTS = 1225;
+    public static final int RAND_POS = 34;
+    private final int DELAY = 100;
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
 
     private int dots;
-    private int apple_x;
-    private int apple_y;
+//    private int apple_x;
+//    private int apple_y;
 
     private boolean leftDirection = false;
     private boolean rightDirection = true;
@@ -42,18 +42,19 @@ public class Board extends JPanel implements ActionListener {
 
     private Timer timer;
     private Image ball;
-    private Image apple;
+    private Comida food;
+//    private Image apple;
     private Image head;
 
     public Board() {
-        
+        food = new Comida();
         initBoard();
     }
     
     private void initBoard() {
 
         addKeyListener(new TAdapter());
-        setBackground(Color.black);
+        setBackground(Color.GRAY);
         setFocusable(true);
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
@@ -66,8 +67,8 @@ public class Board extends JPanel implements ActionListener {
         ImageIcon iid = new ImageIcon("resources/dot.png");
         ball = iid.getImage();
 
-        ImageIcon iia = new ImageIcon("resources/apple-r.png");
-        apple = iia.getImage();
+//        ImageIcon iia = new ImageIcon("resources/apple-r.png");
+//        apple = iia.getImage();
 
         ImageIcon iih = new ImageIcon("resources/head.png");
         head = iih.getImage();
@@ -82,7 +83,8 @@ public class Board extends JPanel implements ActionListener {
             y[z] = 50;
         }
         
-        locateApple();
+//        locateApple();
+        food.genaratePosition();
 
         timer = new Timer(DELAY, this);
         timer.start();
@@ -99,7 +101,7 @@ public class Board extends JPanel implements ActionListener {
         
         if (inGame) {
 
-            g.drawImage(apple, apple_x, apple_y, this);
+            g.drawImage(food.getType().getImage(), food.getX(), food.getY(), this);
 
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
@@ -130,10 +132,11 @@ public class Board extends JPanel implements ActionListener {
 
     private void checkApple() {
 
-        if ((x[0] == apple_x) && (y[0] == apple_y)) {
+        if ((x[0] == food.getX()) && (y[0] == food.getY())) {
 
             dots++;
-            locateApple();
+//            locateApple();
+            food.genaratePosition();
         }
     }
 
@@ -171,19 +174,19 @@ public class Board extends JPanel implements ActionListener {
         }
 
         if (y[0] >= B_HEIGHT) {
-            inGame = false;
+            y[0]=0;            
         }
 
         if (y[0] < 0) {
-            inGame = false;
+        	y[0] = B_HEIGHT;
         }
 
         if (x[0] >= B_WIDTH) {
-            inGame = false;
+            x[0] = 0;
         }
 
         if (x[0] < 0) {
-            inGame = false;
+            x[0] = B_WIDTH;
         }
         
         if (!inGame) {
@@ -191,14 +194,14 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    private void locateApple() {
-
-        int r = (int) (Math.random() * RAND_POS);
-        apple_x = ((r * DOT_SIZE));
-
-        r = (int) (Math.random() * RAND_POS);
-        apple_y = ((r * DOT_SIZE));
-    }
+//    private void locateApple() {
+//
+//        int r = (int) (Math.random() * RAND_POS);
+//        apple_x = ((r * DOT_SIZE));
+//
+//        r = (int) (Math.random() * RAND_POS);
+//        apple_y = ((r * DOT_SIZE));
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
