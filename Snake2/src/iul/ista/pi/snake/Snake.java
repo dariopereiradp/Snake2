@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 public class Snake extends JFrame {
 
     /**
-	 * 
+	 *  
 	 */
 	
 	private static final long serialVersionUID = 4304994289171574723L;
