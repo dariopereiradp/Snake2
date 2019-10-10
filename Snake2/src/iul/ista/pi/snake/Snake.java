@@ -6,7 +6,7 @@ public class Snake extends JFrame {
 
     /**
 	 * 
-	 */sscsc
+	 */
 	
 	private static final long serialVersionUID = 4304994289171574723L;
 
