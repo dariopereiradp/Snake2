@@ -4,7 +4,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class Enemy implements Colisivel {
+public class Enemy {
 
 	private static final int DESLOCAMENTO = 20;
 	private static final int NUM_MOVIMENTOS = 4;
