@@ -19,6 +19,8 @@ import javax.swing.Timer;
  
 public class Board extends Observable implements ActionListener {
 
+	private Enemy inimigo;
+    
 	private JPanel panel;
 	public static final int B_WIDTH = 400;
     public static final int B_HEIGHT = 400;
@@ -29,9 +31,10 @@ public class Board extends Observable implements ActionListener {
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
-
+    
     private int dots;
     private int pontos;
+    private double temperatura;
 //    private int apple_x;
 //    private int apple_y;
 
@@ -47,7 +50,7 @@ public class Board extends Observable implements ActionListener {
 //    private Image apple;
     private Image head;
     
-    private Enemy inimigo;
+    
 
     public Board() {
     	panel = new JPanel() {

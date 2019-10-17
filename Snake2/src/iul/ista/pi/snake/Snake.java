@@ -58,8 +58,9 @@ public class Snake extends JFrame implements Observer {
 		JLabel lblTemperatura = new JLabel("Temperatura:");
 		panel_temperatura.add(lblTemperatura);
 
-		temperatura = new JLabel("00");
+		temperatura = new JLabel("25.0");
 		panel_temperatura.add(temperatura);
+		
 
 		JLabel lblc = new JLabel("\u00BAC");
 		panel_temperatura.add(lblc);
