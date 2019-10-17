@@ -189,6 +189,9 @@ public class Board extends JPanel implements ActionListener {
                 inGame = false;
             }
         }
+        
+        if(x[0] == inimigo.getX() && y[0] == inimigo.getY())
+        		inGame = false;
 
         if (y[0] >= B_HEIGHT) {
             y[0]=0;            
