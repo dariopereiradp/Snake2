@@ -16,7 +16,7 @@ import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
+ 
 public class Board extends Observable implements ActionListener {
 
 	private JPanel panel;
