@@ -6,14 +6,15 @@ public class Comida {
 
 	private int x;
 	private int y;
-
+	
+	
 	public Comida() {
 		genaratePosition();
 		generateType();
 	}
 
 	private void generateType() {
-		type = Food_Type.CHERRY;
+		type = Food_Type.RED_APPLE;
 		// TODO Auto-generated method stub
 
 	}
@@ -25,8 +26,12 @@ public class Comida {
 		r = (int) (Math.random() * Board.RAND_POS);
 		y = ((r * Board.DOT_SIZE));
 
+
+
 	}
-	
+
+
+
 	public int getX() {
 		return x;
 	}
@@ -34,7 +39,7 @@ public class Comida {
 	public int getY() {
 		return y;
 	}
-	
+
 	public Food_Type getType() {
 		return type;
 	}

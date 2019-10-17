@@ -6,9 +6,9 @@ import javax.swing.ImageIcon;
 
 public enum Food_Type {
 
-	GREEN_APPLE(1, 0.45, new ImageIcon("resources/apple.png").getImage()), RED_APPLE(3, 0.3,
+	PEAR(1, 0.45, new ImageIcon("resources/pear.png").getImage()), RED_APPLE(3, 0.3,
 			new ImageIcon("resources/apple-r.png").getImage()), CHERRY(6, 0.2,
-					new ImageIcon("resources/cherry.png").getImage()), RUBY(15, 0.05,
+					new ImageIcon("resources/cherry.png").getImage()), RUBY(10, 0.05,
 							new ImageIcon("resources/ruby.png").getImage());
 
 	/**

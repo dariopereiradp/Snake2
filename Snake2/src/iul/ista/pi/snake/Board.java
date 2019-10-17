@@ -20,17 +20,18 @@ public class Board extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 4250322662900891302L;
-	public static final int B_WIDTH = 350;
-    public static final int B_HEIGHT = 350;
-    public static final int DOT_SIZE = 10;
-    public static final int ALL_DOTS = 1225;
-    public static final int RAND_POS = 34;
+	public static final int B_WIDTH = 400;
+    public static final int B_HEIGHT = 400;
+    public static final int DOT_SIZE = 20;
+    public static final int ALL_DOTS = 1600;
+    public static final int RAND_POS = 19;
     private final int DELAY = 100;
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
 
     private int dots;
+    private int pontos;
 //    private int apple_x;
 //    private int apple_y;
 
@@ -45,6 +46,8 @@ public class Board extends JPanel implements ActionListener {
     private Comida food;
 //    private Image apple;
     private Image head;
+    
+    private Enemy inimigo;
 
     public Board() {
         food = new Comida();
@@ -54,7 +57,7 @@ public class Board extends JPanel implements ActionListener {
     private void initBoard() {
 
         addKeyListener(new TAdapter());
-        setBackground(Color.GRAY);
+        setBackground(Color.BLACK);
         setFocusable(true);
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
@@ -67,9 +70,6 @@ public class Board extends JPanel implements ActionListener {
         ImageIcon iid = new ImageIcon("resources/dot.png");
         ball = iid.getImage();
 
-//        ImageIcon iia = new ImageIcon("resources/apple-r.png");
-//        apple = iia.getImage();
-
         ImageIcon iih = new ImageIcon("resources/head.png");
         head = iih.getImage();
     }
@@ -79,12 +79,14 @@ public class Board extends JPanel implements ActionListener {
         dots = 3;
 
         for (int z = 0; z < dots; z++) {
-            x[z] = 50 - z * 10;
-            y[z] = 50;
+            x[z] = 60 - z * 20;
+            y[z] = 60;
         }
         
-//        locateApple();
         food.genaratePosition();
+        if (geraInimigo()) {
+			inimigo = new Enemy(food);
+		}
 
         timer = new Timer(DELAY, this);
         timer.start();
@@ -93,7 +95,7 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+//        g.drawString("A", 50, 50);
         doDrawing(g);
     }
     
@@ -102,6 +104,11 @@ public class Board extends JPanel implements ActionListener {
         if (inGame) {
 
             g.drawImage(food.getType().getImage(), food.getX(), food.getY(), this);
+            
+            if(inimigo!=null){
+            	inimigo.move();
+            	g.drawImage(inimigo.getImg(), inimigo.getX(), inimigo.getY(), this);
+            }
 
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
@@ -135,10 +142,20 @@ public class Board extends JPanel implements ActionListener {
         if ((x[0] == food.getX()) && (y[0] == food.getY())) {
 
             dots++;
-//            locateApple();
+            pontos+=food.getType().getPontos();
+            System.out.println("Pontos: " + pontos);
+//            Snake.getInstance().getPontos().setText(String.valueOf(pontos)); //não funciona TODO
             food.genaratePosition();
+    		if (geraInimigo()) {
+    			inimigo = new Enemy(food);
+    		}
         }
     }
+    
+	private boolean geraInimigo() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
     private void move() {
 
@@ -194,15 +211,6 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-//    private void locateApple() {
-//
-//        int r = (int) (Math.random() * RAND_POS);
-//        apple_x = ((r * DOT_SIZE));
-//
-//        r = (int) (Math.random() * RAND_POS);
-//        apple_y = ((r * DOT_SIZE));
-//    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -248,4 +256,8 @@ public class Board extends JPanel implements ActionListener {
             }
         }
     }
+    
+    public Timer getTimer() {
+		return timer;
+	}
 }
