@@ -131,6 +131,9 @@ public class Snake extends JFrame implements Observer {
 		if (arg1 instanceof Integer) {
 			pontos.setText(String.valueOf(arg1));
 		}
+		else if (arg1 instanceof Double){
+			temperatura.setText(String.valueOf(arg1));
+		}
 
 	}
 }
