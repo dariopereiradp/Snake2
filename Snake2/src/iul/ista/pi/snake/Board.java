@@ -10,16 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Board extends JPanel implements ActionListener {
+public class Board extends Observable implements ActionListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4250322662900891302L;
+	private JPanel panel;
 	public static final int B_WIDTH = 400;
     public static final int B_HEIGHT = 400;
     public static final int DOT_SIZE = 20;
@@ -50,17 +50,25 @@ public class Board extends JPanel implements ActionListener {
     private Enemy inimigo;
 
     public Board() {
+    	panel = new JPanel() {
+    	    @Override
+    	    public void paintComponent(Graphics g) {
+    	        super.paintComponent(g);
+//    	        g.drawString("A", 50, 50);
+    	        doDrawing(g);
+    	    }
+    	};
         food = new Comida();
         initBoard();
     }
     
     private void initBoard() {
 
-        addKeyListener(new TAdapter());
-        setBackground(Color.BLACK);
-        setFocusable(true);
+        panel.addKeyListener(new TAdapter());
+        panel.setBackground(Color.BLACK);
+        panel.setFocusable(true);
 
-        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+        panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         loadImages();
         initGame();
     }
@@ -92,29 +100,24 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-//        g.drawString("A", 50, 50);
-        doDrawing(g);
-    }
+
     
     private void doDrawing(Graphics g) {
         
         if (inGame) {
 
-            g.drawImage(food.getType().getImage(), food.getX(), food.getY(), this);
+            g.drawImage(food.getType().getImage(), food.getX(), food.getY(), panel);
             
             if(inimigo!=null){
             	inimigo.move();
-            	g.drawImage(inimigo.getImg(), inimigo.getX(), inimigo.getY(), this);
+            	g.drawImage(inimigo.getImg(), inimigo.getX(), inimigo.getY(), panel);
             }
 
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
-                    g.drawImage(head, x[z], y[z], this);
+                    g.drawImage(head, x[z], y[z], panel);
                 } else {
-                    g.drawImage(ball, x[z], y[z], this);
+                    g.drawImage(ball, x[z], y[z], panel);
                 }
             }
 
@@ -130,7 +133,7 @@ public class Board extends JPanel implements ActionListener {
         
         String msg = "Game Over";
         Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = getFontMetrics(small);
+        FontMetrics metr = panel.getFontMetrics(small);
 
         g.setColor(Color.white);
         g.setFont(small);
@@ -143,7 +146,9 @@ public class Board extends JPanel implements ActionListener {
 
             dots++;
             pontos+=food.getType().getPontos();
-            System.out.println("Pontos: " + pontos);
+           
+            setChanged();
+            notifyObservers(new Integer(pontos));
 //            Snake.getInstance().getPontos().setText(String.valueOf(pontos)); //não funciona TODO
             food.genaratePosition();
     		if (geraInimigo()) {
@@ -221,7 +226,7 @@ public class Board extends JPanel implements ActionListener {
             move();
         }
 
-        repaint();
+        panel.repaint();
     }
 
     private class TAdapter extends KeyAdapter {
@@ -259,5 +264,9 @@ public class Board extends JPanel implements ActionListener {
     
     public Timer getTimer() {
 		return timer;
+	}
+    
+    public JPanel getPanel() {
+		return panel;
 	}
 }
