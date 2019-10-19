@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -24,6 +25,7 @@ public class Snake extends JFrame implements Observer {
 	private static Snake INSTANCE;
 	private Board board;
 	private JLabel pontos, temperatura;
+	private Temperatura temp;
 
 	private Snake() {
 
@@ -58,10 +60,21 @@ public class Snake extends JFrame implements Observer {
 		JLabel lblTemperatura = new JLabel("Temperatura:");
 		panel_temperatura.add(lblTemperatura);
 
-		temperatura = new JLabel("25.0");
+		temperatura = new JLabel();
 		panel_temperatura.add(temperatura);
 		
 
+		int delay = 1000;
+		ActionListener taskPerformer = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				temp = new Temperatura();
+				temperatura.setText(temp.toString());
+				board.setT(temp.getValor());
+			}};
+			
+		new Timer(delay, taskPerformer).start();
 		JLabel lblc = new JLabel("\u00BAC");
 		panel_temperatura.add(lblc);
 

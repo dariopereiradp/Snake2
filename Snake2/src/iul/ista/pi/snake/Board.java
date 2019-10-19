@@ -34,16 +34,20 @@ public class Board extends Observable implements ActionListener {
     
     private int dots;
     private int pontos;
-    private double temperatura;
+    private double t;
 //    private int apple_x;
 //    private int apple_y;
 
-    private boolean leftDirection = false;
+    public void setT(double t) {
+		this.t = t;
+	}
+
+	private boolean leftDirection = false;
     private boolean rightDirection = true;
     private boolean upDirection = false;
     private boolean downDirection = false;
     private boolean inGame = true;
-
+    
     private Timer timer;
     private Image ball;
     private Comida food;
@@ -62,6 +66,7 @@ public class Board extends Observable implements ActionListener {
     	    }
     	};
         food = new Comida();
+        this.t = t;
         initBoard();
     }
     
@@ -152,7 +157,7 @@ public class Board extends Observable implements ActionListener {
            
             setChanged();
             notifyObservers(new Integer(pontos));
-//            Snake.getInstance().getPontos().setText(String.valueOf(pontos)); //não funciona TODO
+//            Snake.getInstance().getPontos().setText(String.valueOf(pontos)); //nï¿½o funciona TODO
             food.genaratePosition();
     		if (geraInimigo()) {
     			inimigo = new Enemy(food);
@@ -166,6 +171,8 @@ public class Board extends Observable implements ActionListener {
 	}
 
     private void move() {
+    	int n = 0;
+    	if(t<20) { n = -(int)t + 20; }
 
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
@@ -187,6 +194,7 @@ public class Board extends Observable implements ActionListener {
         if (downDirection) {
             y[0] += DOT_SIZE;
         }
+        
     }
 
     private void checkCollision() {
