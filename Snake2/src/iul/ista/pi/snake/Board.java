@@ -27,19 +27,19 @@ public class Board extends Observable implements ActionListener {
     public static final int DOT_SIZE = 20;
     public static final int ALL_DOTS = 1600;
     public static final int RAND_POS = 19;
-    private final int DELAY = 100;
+    private int DELAY = 100;
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
     
     private int dots;
     private int pontos;
-    private double t;
+    private double temperatura;
 //    private int apple_x;
 //    private int apple_y;
 
     public void setT(double t) {
-		this.t = t;
+		this.temperatura = t;
 	}
 
 	private boolean leftDirection = false;
@@ -66,7 +66,7 @@ public class Board extends Observable implements ActionListener {
     	    }
     	};
         food = new Comida();
-        this.t = t;
+        this.temperatura = temperatura;
         initBoard();
     }
     
@@ -171,8 +171,7 @@ public class Board extends Observable implements ActionListener {
 	}
 
     private void move() {
-    	int n = 0;
-    	if(t<20) { n = -(int)t + 20; }
+    	if(temperatura<20) { DELAY += (-(int)temperatura + 100); }
 
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
