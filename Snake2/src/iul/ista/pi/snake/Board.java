@@ -20,6 +20,7 @@ import javax.swing.Timer;
 public class Board extends Observable implements ActionListener {
 
 	private Enemy inimigo;
+	private Parede parede;
     
 	private JPanel panel;
 	public static final int B_WIDTH = 400;
@@ -51,6 +52,7 @@ public class Board extends Observable implements ActionListener {
     private Timer timer;
     private Image ball;
     private Comida food;
+    private Parede wall;
 //    private Image apple;
     private Image head;
     
@@ -103,6 +105,9 @@ public class Board extends Observable implements ActionListener {
         if (geraInimigo()) {
 			inimigo = new Enemy(food);
 		}
+        
+//        	parede = new Parede();
+       
 
         timer = new Timer(DELAY, this);
         timer.start();
@@ -115,6 +120,9 @@ public class Board extends Observable implements ActionListener {
         if (inGame) {
 
             g.drawImage(food.getType().getImage(), food.getX(), food.getY(), panel);
+            
+//           for(int i=0; i < parede.NParedes();i++)
+//            	g.drawImage(wall.getImg(), parede.getX(), parede.getY(), panel);
             
             if(inimigo!=null){
             	inimigo.move();
@@ -169,6 +177,7 @@ public class Board extends Observable implements ActionListener {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
 
     private void move() {
     	if(temperatura<20) { DELAY += (-(int)temperatura + 100); }
