@@ -220,6 +220,9 @@ public class Board extends Observable implements ActionListener {
         
         if(x[0] == inimigo.getX() && y[0] == inimigo.getY())
         		inGame = false;
+        
+        if(x[0] == parede.getX() && y[0] == parede.getY())
+        	inGame = false;
 
         if (y[0] >= B_HEIGHT) {
             y[0]=0;            
