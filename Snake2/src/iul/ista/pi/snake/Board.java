@@ -179,7 +179,11 @@ public class Board extends Observable implements ActionListener {
 	}
 	
 
-    private void move() {
+    public boolean isInGame() {
+		return inGame;
+	}
+
+	private void move() {
     	if(temperatura<20) { DELAY += (-(int)temperatura + 100); }
 
         for (int z = dots; z > 0; z--) {

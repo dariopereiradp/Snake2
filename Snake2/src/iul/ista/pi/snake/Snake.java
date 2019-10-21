@@ -69,9 +69,11 @@ public class Snake extends JFrame implements Observer {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				temp = new Temperatura();
-				temperatura.setText(temp.toString());
-				board.setT(temp.getValor());
+				if(board.isInGame()) {
+					temp = new Temperatura();
+					temperatura.setText(temp.toString());
+					board.setT(temp.getValor());
+				}
 			}};
 			
 		new Timer(delay, taskPerformer).start();
