@@ -31,7 +31,7 @@ public class Board extends Observable implements ActionListener {
 
 	private final int x[] = new int[ALL_DOTS];
 	private final int y[] = new int[ALL_DOTS];
-	private ArrayList<Parede> paredes = new ArrayList<>();
+	private ArrayList<Parede> paredes;
 
 	private int dots;
 	private int pontos;
@@ -48,7 +48,6 @@ public class Board extends Observable implements ActionListener {
 	private Timer timer;
 	private Image ball;
 	private Comida food;
-	// private Image apple;
 	private Image head;
 
 	public Board() {
@@ -65,6 +64,7 @@ public class Board extends Observable implements ActionListener {
 
 	public void restart() {
 		DELAY = 100;
+		paredes = new ArrayList<>();
 		nParedes = Parede.generateNParedes();
 		for (int i = 0; i < nParedes; i++) {
 			paredes.add(new Parede());
@@ -123,9 +123,7 @@ public class Board extends Observable implements ActionListener {
 				for (int i = 0; i < nParedes; i++) {
 					Parede parede = paredes.get(i);
 					g.drawImage(parede.getImg(), parede.getX(), parede.getY(), panel);
-					// parede = new Parede();
 				}
-				// NParedes = 0;
 			}
 
 			if (inimigo != null) {
@@ -158,6 +156,7 @@ public class Board extends Observable implements ActionListener {
 		g.setColor(Color.white);
 		g.setFont(small);
 		g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+		timer.stop();
 	}
 
 	private void checkApple() {
@@ -192,7 +191,7 @@ public class Board extends Observable implements ActionListener {
 
 	private void move() {
 		if (temperatura > 0) {
-			DELAY += (-(int) temperatura + 100);
+			DELAY = 200 - (int)temperatura * 4;
 		}
 
 		for (int z = dots; z > 0; z--) {
