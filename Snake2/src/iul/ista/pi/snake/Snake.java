@@ -97,6 +97,11 @@ public class Snake extends JFrame implements Observer {
 		mnMenu.add(mntmOpes);
 
 		JMenuItem mntmReiniciar = new JMenuItem("Reiniciar");
+		mntmReiniciar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				board.restart();
+			}
+		});
 		mnMenu.add(mntmReiniciar);
 
 		JMenuItem mntmSair = new JMenuItem("Sair");

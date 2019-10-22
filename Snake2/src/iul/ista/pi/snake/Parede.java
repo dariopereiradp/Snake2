@@ -21,7 +21,7 @@ public class Parede {
 		return img;
 	}	
 	
-	public int generateNParedes() {
+	public static int generateNParedes() {
 		int nParedes = 0 + (int)(Math.random() * ((9 - 0) + 1));
 		return nParedes;
 	}

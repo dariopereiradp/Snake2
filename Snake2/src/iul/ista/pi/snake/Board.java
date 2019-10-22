@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -19,7 +20,6 @@ import javax.swing.Timer;
 public class Board extends Observable implements ActionListener {
 
 	private Enemy inimigo;
-	private Parede parede;
 	private int nParedes;
 	private JPanel panel;
 	public static final int B_WIDTH = 400;
@@ -31,6 +31,7 @@ public class Board extends Observable implements ActionListener {
 
 	private final int x[] = new int[ALL_DOTS];
 	private final int y[] = new int[ALL_DOTS];
+	private ArrayList<Parede> paredes = new ArrayList<>();
 
 	private int dots;
 	private int pontos;
@@ -59,10 +60,18 @@ public class Board extends Observable implements ActionListener {
 				doDrawing(g);
 			}
 		};
+		restart();
+	}
+
+	public void restart() {
+		DELAY = 100;
+		nParedes = Parede.generateNParedes();
+		for (int i = 0; i < nParedes; i++) {
+			paredes.add(new Parede());
+		}
 		food = new Comida();
-		parede = new Parede();
-		this.temperatura = temperatura;
 		initBoard();
+		inGame = true;
 	}
 
 	private void initBoard() {
@@ -99,9 +108,6 @@ public class Board extends Observable implements ActionListener {
 			inimigo = new Enemy(food);
 		}
 
-		parede = new Parede();
-		nParedes = parede.generateNParedes();
-
 		timer = new Timer(DELAY, this);
 		timer.start();
 	}
@@ -111,19 +117,16 @@ public class Board extends Observable implements ActionListener {
 		if (inGame) {
 
 			g.drawImage(food.getType().getImage(), food.getX(), food.getY(), panel);
-//
-//			if (nParedes == 1)
-//				g.drawImage(parede.getImg(), parede.getX(), parede.getY(), panel);
-//			else {
-//				if (nParedes != 0) {
-//					for (int i = 0; i < nParedes; i++) {
-//						g.drawImage(parede.getImg(), parede.getX(), parede.getY(), panel);
-////						parede = new Parede();		
-//					}
-////					NParedes = 0;
-//				}
-//			}
-			
+
+			if (nParedes != 0) {
+				for (int i = 0; i < nParedes; i++) {
+					Parede parede = paredes.get(i);
+					g.drawImage(parede.getImg(), parede.getX(), parede.getY(), panel);
+					// parede = new Parede();
+				}
+				// NParedes = 0;
+			}
+
 			if (inimigo != null) {
 				inimigo.move();
 				g.drawImage(inimigo.getImg(), inimigo.getX(), inimigo.getY(), panel);
@@ -226,9 +229,12 @@ public class Board extends Observable implements ActionListener {
 		if (x[0] == inimigo.getX() && y[0] == inimigo.getY())
 			inGame = false;
 
-		if (x[0] == parede.getX() && y[0] == parede.getY())
-			inGame = false;
-
+		for (int i = 0; i < nParedes; i++) {
+			Parede parede = paredes.get(i);
+			if (x[0] == parede.getX() && y[0] == parede.getY())
+				inGame = false;
+		}
+		
 		if (y[0] >= B_HEIGHT) {
 			y[0] = 0;
 		}
