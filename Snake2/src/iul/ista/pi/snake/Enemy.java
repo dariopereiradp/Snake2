@@ -8,6 +8,7 @@ public class Enemy {
 
 	private static final int DESLOCAMENTO = 20;
 	private static final int NUM_MOVIMENTOS = 4;
+	private double probabilidade_sim = 0.1;
 
 	private Image img = new ImageIcon("resources/enemy.png").getImage();
 
@@ -23,7 +24,7 @@ public class Enemy {
 
 	public void move() {
 		if (contador_movimentos == NUM_MOVIMENTOS) {
-			contador_movimentos=0;
+			contador_movimentos = 0;
 			if ((contador_direcoes + 1) == NUM_MOVIMENTOS)
 				contador_direcoes = 0;
 			else
@@ -33,28 +34,33 @@ public class Enemy {
 		Direcao direcao = Direcao.values()[contador_direcoes];
 		switch (direcao) {
 		case BAIXO:
-			this.x+=10;
+			this.x += 10;
 			break;
 		case DIREITA:
-			this.y+=10;
+			this.y += 10;
 			break;
 		case CIMA:
-			this.x-=10;
+			this.x -= 10;
 			break;
 		default:
-			this.y-=10;
+			this.y -= 10;
 			break;
 		}
 	}
-	
+
+	public void change_probabilidades() {
+		if (probabilidade_sim < 1)
+			probabilidade_sim += 0.1;
+	}
+
 	public Image getImg() {
 		return img;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
-	
+
 	public int getY() {
 		return y;
 	}

@@ -105,13 +105,11 @@ public class Board extends Observable implements ActionListener {
 			y[z] = 60;
 		}
 
-//		food.genaratePosition();
-
 		if (geraInimigo()) {
 			inimigo = new Enemy(food);
 		}
 
-		if(timer!=null)
+		if (timer != null)
 			timer.stop();
 		timer = new Timer(DELAY, this);
 		timer.start();
@@ -166,10 +164,13 @@ public class Board extends Observable implements ActionListener {
 	private void checkApple() {
 
 		if ((x[0] == food.getX()) && (y[0] == food.getY())) {
-
+			contador_num_comidas++;
+			if(contador_num_comidas==3){
+				contador_num_comidas=0;
+				inimigo.change_probabilidades();
+			}
 			dots++;
 			pontos += food.getType().getPontos();
-
 			setChanged();
 			notifyObservers(new Integer(pontos));
 			food.generateType();
