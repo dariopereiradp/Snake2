@@ -8,7 +8,7 @@ public class Enemy {
 
 	private static final int DESLOCAMENTO = 20;
 	private static final int NUM_MOVIMENTOS = 4;
-	private double probabilidade_sim = 0.1;
+	private static double probabilidade_sim = 0.1;
 
 	private Image img = new ImageIcon("resources/enemy.png").getImage();
 
@@ -48,15 +48,22 @@ public class Enemy {
 		}
 	}
 
-	public void change_probabilidades() {
+	public static void change_probabilidades() {
 		if (probabilidade_sim < 1)
 			probabilidade_sim += 0.1;
+		System.out.println("Probabilidade Inimigo: " + probabilidade_sim);
 	}
 	
 	public static boolean geraInimigo() {
 		double u = Math.random();
-		
-		return true;
+		if(u<=probabilidade_sim)
+			return true;
+		else
+			return false;
+	}
+	
+	public static void reset(){
+		probabilidade_sim=0.1;
 	}
 
 	public Image getImg() {
