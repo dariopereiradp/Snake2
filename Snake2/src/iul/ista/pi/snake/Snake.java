@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 
 public class Snake extends JFrame implements Observer {
 
-
 	private static final long serialVersionUID = 4304994289171574723L;
 	private static Snake INSTANCE;
 	private Board board;
