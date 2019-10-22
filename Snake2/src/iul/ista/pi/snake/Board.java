@@ -104,6 +104,7 @@ public class Board extends Observable implements ActionListener {
 		}
 
 		food.genaratePosition();
+		
 		if (geraInimigo()) {
 			inimigo = new Enemy(food);
 		}
