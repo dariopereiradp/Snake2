@@ -33,7 +33,6 @@ public class Parede {
 		r = (int) (Math.random() * Board.RAND_POS);
 		y = ((r * Board.DOT_SIZE));
 
-
 	}
 	
 	public int getX() {
