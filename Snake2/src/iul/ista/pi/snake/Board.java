@@ -105,7 +105,7 @@ public class Board extends Observable implements ActionListener {
 			y[z] = 60;
 		}
 
-		if (geraInimigo()) {
+		if (Enemy.geraInimigo()) {
 			inimigo = new Enemy(food);
 		}
 
@@ -175,16 +175,13 @@ public class Board extends Observable implements ActionListener {
 			notifyObservers(new Integer(pontos));
 			food.generateType();
 			food.genaratePosition();
-			if (geraInimigo()) {
+			if (Enemy.geraInimigo()) {
 				inimigo = new Enemy(food);
 			}
 		}
 	}
 
-	private boolean geraInimigo() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+
 
 	public void setTemperatura(double temperatura) {
 		this.temperatura = temperatura;

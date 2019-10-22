@@ -52,6 +52,12 @@ public class Enemy {
 		if (probabilidade_sim < 1)
 			probabilidade_sim += 0.1;
 	}
+	
+	public static boolean geraInimigo() {
+		double u = Math.random();
+		
+		return true;
+	}
 
 	public Image getImg() {
 		return img;
