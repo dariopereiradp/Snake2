@@ -1,4 +1,5 @@
 package iul.ista.pi.snake;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,291 +12,285 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
- 
+
 public class Board extends Observable implements ActionListener {
 
 	private Enemy inimigo;
 	private Parede parede;
-    
+
 	private JPanel panel;
 	public static final int B_WIDTH = 400;
-    public static final int B_HEIGHT = 400;
-    public static final int DOT_SIZE = 20;
-    public static final int ALL_DOTS = 1600;
-    public static final int RAND_POS = 19;
-    private int DELAY = 100;
+	public static final int B_HEIGHT = 400;
+	public static final int DOT_SIZE = 20;
+	public static final int ALL_DOTS = 1600;
+	public static final int RAND_POS = 19;
+	private int DELAY = 100;
 
-    private final int x[] = new int[ALL_DOTS];
-    private final int y[] = new int[ALL_DOTS];
-    
-    private int dots;
-    private int pontos;
-    private double temperatura;
-//    private int apple_x;
-//    private int apple_y;
+	private final int x[] = new int[ALL_DOTS];
+	private final int y[] = new int[ALL_DOTS];
 
-    public void setT(double t) {
-		this.temperatura = t;
-	}
+	private int dots;
+	private int pontos;
+	private double temperatura;
+	// private int apple_x;
+	// private int apple_y;
 
 	private boolean leftDirection = false;
-    private boolean rightDirection = true;
-    private boolean upDirection = false;
-    private boolean downDirection = false;
-    private boolean inGame = true;
-    
-    private Timer timer;
-    private Image ball;
-    private Comida food;
-    private Parede wall;
-//    private Image apple;
-    private Image head;
-    
-    
+	private boolean rightDirection = true;
+	private boolean upDirection = false;
+	private boolean downDirection = false;
+	private boolean inGame = true;
 
-    public Board() {
-    	panel = new JPanel() {
-    	    @Override
-    	    public void paintComponent(Graphics g) {
-    	        super.paintComponent(g);
-//    	        g.drawString("A", 50, 50);
-    	        doDrawing(g);
-    	    }
-    	};
-        food = new Comida();
-        this.temperatura = temperatura;
-        initBoard();
-    }
-    
-    private void initBoard() {
+	private Timer timer;
+	private Image ball;
+	private Comida food;
+	// private Image apple;
+	private Image head;
 
-        panel.addKeyListener(new TAdapter());
-        panel.setBackground(Color.BLACK);
-        panel.setFocusable(true);
+	public Board() {
+		panel = new JPanel() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				// g.drawString("A", 50, 50);
+				doDrawing(g);
+			}
+		};
+		food = new Comida();
+		parede = new Parede();
+		this.temperatura = temperatura;
+		initBoard();
+	}
 
-        panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
-        loadImages();
-        initGame();
-    }
+	private void initBoard() {
 
-    private void loadImages() {
+		panel.addKeyListener(new TAdapter());
+		panel.setBackground(Color.BLACK);
+		panel.setFocusable(true);
 
-        ImageIcon iid = new ImageIcon("resources/dot.png");
-        ball = iid.getImage();
+		panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+		loadImages();
+		initGame();
+	}
 
-        ImageIcon iih = new ImageIcon("resources/head.png");
-        head = iih.getImage();
-    }
+	private void loadImages() {
 
-    private void initGame() {
+		ImageIcon iid = new ImageIcon("resources/dot.png");
+		ball = iid.getImage();
 
-        dots = 3;
+		ImageIcon iih = new ImageIcon("resources/head.png");
+		head = iih.getImage();
+	}
 
-        for (int z = 0; z < dots; z++) {
-            x[z] = 60 - z * 20;
-            y[z] = 60;
-        }
-        
-        food.genaratePosition();
-        if (geraInimigo()) {
+	private void initGame() {
+
+		dots = 3;
+
+		for (int z = 0; z < dots; z++) {
+			x[z] = 60 - z * 20;
+			y[z] = 60;
+		}
+
+		food.genaratePosition();
+		if (geraInimigo()) {
 			inimigo = new Enemy(food);
 		}
-        
-//        	parede = new Parede();
-       
 
-        timer = new Timer(DELAY, this);
-        timer.start();
-    }
+		// parede = new Parede();
 
+		timer = new Timer(DELAY, this);
+		timer.start();
+	}
 
-    
-    private void doDrawing(Graphics g) {
-        
-        if (inGame) {
+	private void doDrawing(Graphics g) {
 
-            g.drawImage(food.getType().getImage(), food.getX(), food.getY(), panel);
-            
-//           for(int i=0; i < parede.NParedes();i++)
-//            	g.drawImage(wall.getImg(), parede.getX(), parede.getY(), panel);
-            
-            if(inimigo!=null){
-            	inimigo.move();
-            	g.drawImage(inimigo.getImg(), inimigo.getX(), inimigo.getY(), panel);
-            }
+		if (inGame) {
 
-            for (int z = 0; z < dots; z++) {
-                if (z == 0) {
-                    g.drawImage(head, x[z], y[z], panel);
-                } else {
-                    g.drawImage(ball, x[z], y[z], panel);
-                }
-            }
+			g.drawImage(food.getType().getImage(), food.getX(), food.getY(), panel);
 
-            Toolkit.getDefaultToolkit().sync();
+//			 for(int i=0; i < parede.nParedes();i++)
+//			 g.drawImage(wall.getImg(), parede.getX(), parede.getY(), panel);
 
-        } else {
+			if (inimigo != null) {
+				inimigo.move();
+				g.drawImage(inimigo.getImg(), inimigo.getX(), inimigo.getY(), panel);
+			}
 
-            gameOver(g);
-        }        
-    }
+			for (int z = 0; z < dots; z++) {
+				if (z == 0) {
+					g.drawImage(head, x[z], y[z], panel);
+				} else {
+					g.drawImage(ball, x[z], y[z], panel);
+				}
+			}
 
-    private void gameOver(Graphics g) {
-        
-        String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = panel.getFontMetrics(small);
+			Toolkit.getDefaultToolkit().sync();
 
-        g.setColor(Color.white);
-        g.setFont(small);
-        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
-    }
+		} else {
 
-    private void checkApple() {
+			gameOver(g);
+		}
+	}
 
-        if ((x[0] == food.getX()) && (y[0] == food.getY())) {
+	private void gameOver(Graphics g) {
 
-            dots++;
-            pontos+=food.getType().getPontos();
-           
-            setChanged();
-            notifyObservers(new Integer(pontos));
-//            Snake.getInstance().getPontos().setText(String.valueOf(pontos)); //n�o funciona TODO
-            food.genaratePosition();
-    		if (geraInimigo()) {
-    			inimigo = new Enemy(food);
-    		}
-        }
-    }
-    
+		String msg = "Game Over";
+		Font small = new Font("Helvetica", Font.BOLD, 14);
+		FontMetrics metr = panel.getFontMetrics(small);
+
+		g.setColor(Color.white);
+		g.setFont(small);
+		g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+	}
+
+	private void checkApple() {
+
+		if ((x[0] == food.getX()) && (y[0] == food.getY())) {
+
+			dots++;
+			pontos += food.getType().getPontos();
+
+			setChanged();
+			notifyObservers(new Integer(pontos));
+
+			food.genaratePosition();
+			if (geraInimigo()) {
+				inimigo = new Enemy(food);
+			}
+		}
+	}
+
 	private boolean geraInimigo() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	
+	public void setTemperatura(double temperatura) {
+		this.temperatura = temperatura;
+	}
 
-    public boolean isInGame() {
+	public boolean isInGame() {
 		return inGame;
 	}
 
 	private void move() {
-    	if(temperatura<20) { DELAY += (-(int)temperatura + 100); }
+		if (temperatura > 0) {
+			DELAY += (-(int) temperatura + 100);
+		}
 
-        for (int z = dots; z > 0; z--) {
-            x[z] = x[(z - 1)];
-            y[z] = y[(z - 1)];
-        }
+		for (int z = dots; z > 0; z--) {
+			x[z] = x[(z - 1)];
+			y[z] = y[(z - 1)];
+		}
 
-        if (leftDirection) {
-            x[0] -= DOT_SIZE;
-        }
+		if (leftDirection) {
+			x[0] -= DOT_SIZE;
+		}
 
-        if (rightDirection) {
-            x[0] += DOT_SIZE;
-        }
+		if (rightDirection) {
+			x[0] += DOT_SIZE;
+		}
 
-        if (upDirection) {
-            y[0] -= DOT_SIZE;
-        }
+		if (upDirection) {
+			y[0] -= DOT_SIZE;
+		}
 
-        if (downDirection) {
-            y[0] += DOT_SIZE;
-        }
-        
-    }
+		if (downDirection) {
+			y[0] += DOT_SIZE;
+		}
 
-    private void checkCollision() {
+	}
 
-        for (int z = dots; z > 0; z--) {
+	private void checkCollision() {
 
-            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-                inGame = false;
-            }
-        }
-        
-        if(x[0] == inimigo.getX() && y[0] == inimigo.getY())
-        		inGame = false;
-        
-        if(x[0] == parede.getX() && y[0] == parede.getY())
-        	inGame = false;
+		for (int z = dots; z > 0; z--) {
 
-        if (y[0] >= B_HEIGHT) {
-            y[0]=0;            
-        }
+			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+				inGame = false;
+			}
+		}
 
-        if (y[0] < 0) {
-        	y[0] = B_HEIGHT;
-        }
+		if (x[0] == inimigo.getX() && y[0] == inimigo.getY())
+			inGame = false;
 
-        if (x[0] >= B_WIDTH) {
-            x[0] = 0;
-        }
+		if (x[0] == parede.getX() && y[0] == parede.getY())
+			inGame = false;
 
-        if (x[0] < 0) {
-            x[0] = B_WIDTH;
-        }
-        
-        if (!inGame) {
-            timer.stop();
-        }
-    }
+		if (y[0] >= B_HEIGHT) {
+			y[0] = 0;
+		}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+		if (y[0] < 0) {
+			y[0] = B_HEIGHT;
+		}
 
-        if (inGame) {
+		if (x[0] >= B_WIDTH) {
+			x[0] = 0;
+		}
 
-            checkApple();
-            checkCollision();
-            move();
-        }
+		if (x[0] < 0) {
+			x[0] = B_WIDTH;
+		}
 
-        panel.repaint();
-    }
+		if (!inGame) {
+			timer.stop();
+		}
+	}
 
-    private class TAdapter extends KeyAdapter {
+	@Override
+	public void actionPerformed(ActionEvent e) {
 
-        @Override
-        public void keyPressed(KeyEvent e) {
+		if (inGame) {
 
-            int key = e.getKeyCode();
+			checkApple();
+			checkCollision();
+			move();
+		}
 
-            if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
-                leftDirection = true;
-                upDirection = false;
-                downDirection = false;
-            }
+		panel.repaint();
+	}
 
-            if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
-                rightDirection = true;
-                upDirection = false;
-                downDirection = false;
-            }
+	private class TAdapter extends KeyAdapter {
 
-            if ((key == KeyEvent.VK_UP) && (!downDirection)) {
-                upDirection = true;
-                rightDirection = false;
-                leftDirection = false;
-            }
+		@Override
+		public void keyPressed(KeyEvent e) {
 
-            if ((key == KeyEvent.VK_DOWN) && (!upDirection)) {
-                downDirection = true;
-                rightDirection = false;
-                leftDirection = false;
-            }
-        }
-    }
-    
-    public Timer getTimer() {
+			int key = e.getKeyCode();
+
+			if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
+				leftDirection = true;
+				upDirection = false;
+				downDirection = false;
+			}
+
+			if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
+				rightDirection = true;
+				upDirection = false;
+				downDirection = false;
+			}
+
+			if ((key == KeyEvent.VK_UP) && (!downDirection)) {
+				upDirection = true;
+				rightDirection = false;
+				leftDirection = false;
+			}
+
+			if ((key == KeyEvent.VK_DOWN) && (!upDirection)) {
+				downDirection = true;
+				rightDirection = false;
+				leftDirection = false;
+			}
+		}
+	}
+
+	public Timer getTimer() {
 		return timer;
 	}
-    
-    public JPanel getPanel() {
+
+	public JPanel getPanel() {
 		return panel;
 	}
 }

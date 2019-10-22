@@ -10,12 +10,12 @@ public class Parede {
 	
 	private int x;
 	private int y;
-	private int NParedes;
+	private int nParedes;
 	
 	public Parede() {
 //		x = (int) Math.round();
 //		y = (int) Math.round();
-		NParedes =  -1 + (int)(Math.random() * ((9 + 1)  + 1));
+		nParedes =  -1 + (int)(Math.random() * ((9 + 1)  + 1));
 		
 	}
 	
@@ -23,9 +23,9 @@ public class Parede {
 		return img;
 	}	
 	
-	public int NParedes() {
-		NParedes = 0 + (int)(Math.random() * ((9 - 0) + 1));
-		return NParedes;
+	public int nParedes() {
+		nParedes = 0 + (int)(Math.random() * ((9 - 0) + 1));
+		return nParedes;
 	}
 	
 	public int getX() {

@@ -13,10 +13,6 @@ public class Enemy {
 
 	private int x;
 	private int y;
-	private boolean move_x_cima = false;
-	private boolean move_y_esquerda = false;
-	private boolean move_x_baixo = true;
-	private boolean move_y_direita = true;
 	private int contador_direcoes;
 	private int contador_movimentos;
 
@@ -26,9 +22,9 @@ public class Enemy {
 	}
 
 	public void move() {
-		if (contador_movimentos == 4) {
+		if (contador_movimentos == NUM_MOVIMENTOS) {
 			contador_movimentos=0;
-			if ((contador_direcoes + 1) == 4)
+			if ((contador_direcoes + 1) == NUM_MOVIMENTOS)
 				contador_direcoes = 0;
 			else
 				contador_direcoes++;

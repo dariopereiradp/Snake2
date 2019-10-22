@@ -1,5 +1,6 @@
 package iul.ista.pi.snake;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 public class Temperatura {
@@ -19,7 +20,8 @@ public class Temperatura {
 
 	@Override
 	public String toString() {
-		return Double.toString(valor);
+		DecimalFormat df = new DecimalFormat("#.00");
+		return df.format(valor);
 	}
 		
 	

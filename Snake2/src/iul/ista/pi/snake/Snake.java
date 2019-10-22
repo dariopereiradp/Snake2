@@ -72,7 +72,7 @@ public class Snake extends JFrame implements Observer {
 				if(board.isInGame()) {
 					temp = new Temperatura();
 					temperatura.setText(temp.toString());
-					board.setT(temp.getValor());
+					board.setTemperatura(temp.getValor());
 				}
 			}};
 			
