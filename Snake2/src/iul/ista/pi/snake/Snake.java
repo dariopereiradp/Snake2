@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.JLabel;
@@ -35,7 +37,7 @@ public class Snake extends JFrame implements Observer {
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		getContentPane().add(board.getPanel());
+		getContentPane().add(board.getPanel(), BorderLayout.CENTER);
 
 		JPanel panel_info = new JPanel();
 		getContentPane().add(panel_info, BorderLayout.NORTH);
@@ -58,7 +60,6 @@ public class Snake extends JFrame implements Observer {
 
 		temperatura = new JLabel();
 		panel_temperatura.add(temperatura);
-		
 
 		int delay = 1000;
 		ActionListener taskPerformer = new ActionListener() {
@@ -76,11 +77,9 @@ public class Snake extends JFrame implements Observer {
 		JLabel lblc = new JLabel("\u00BAC");
 		panel_temperatura.add(lblc);
 
-		setResizable(false);
-		pack();
-
 		setTitle("Snake");
-		setLocationRelativeTo(null);
+//		setLocationRelativeTo(null);
+		setLocation(300, 100);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -118,6 +117,8 @@ public class Snake extends JFrame implements Observer {
 			}
 		});
 		mnAjuda.add(mntmSobre);
+		setResizable(false);
+		pack();
 	}
 
 	public JLabel getPontos() {
