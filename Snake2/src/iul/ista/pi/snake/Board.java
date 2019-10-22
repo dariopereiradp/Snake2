@@ -111,6 +111,8 @@ public class Board extends Observable implements ActionListener {
 			inimigo = new Enemy(food);
 		}
 
+		if(timer!=null)
+			timer.stop();
 		timer = new Timer(DELAY, this);
 		timer.start();
 	}
