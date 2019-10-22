@@ -20,7 +20,7 @@ public class Board extends Observable implements ActionListener {
 
 	private Enemy inimigo;
 	private Parede parede;
-
+	private int nParedes;
 	private JPanel panel;
 	public static final int B_WIDTH = 400;
 	public static final int B_HEIGHT = 400;
@@ -99,7 +99,8 @@ public class Board extends Observable implements ActionListener {
 			inimigo = new Enemy(food);
 		}
 
-		// parede = new Parede();
+		parede = new Parede();
+		nParedes = parede.generateNParedes();
 
 		timer = new Timer(DELAY, this);
 		timer.start();
@@ -110,10 +111,19 @@ public class Board extends Observable implements ActionListener {
 		if (inGame) {
 
 			g.drawImage(food.getType().getImage(), food.getX(), food.getY(), panel);
-
-//			 for(int i=0; i < parede.nParedes();i++)
-//			 g.drawImage(wall.getImg(), parede.getX(), parede.getY(), panel);
-
+//
+//			if (nParedes == 1)
+//				g.drawImage(parede.getImg(), parede.getX(), parede.getY(), panel);
+//			else {
+//				if (nParedes != 0) {
+//					for (int i = 0; i < nParedes; i++) {
+//						g.drawImage(parede.getImg(), parede.getX(), parede.getY(), panel);
+////						parede = new Parede();		
+//					}
+////					NParedes = 0;
+//				}
+//			}
+			
 			if (inimigo != null) {
 				inimigo.move();
 				g.drawImage(inimigo.getImg(), inimigo.getX(), inimigo.getY(), panel);
@@ -167,7 +177,7 @@ public class Board extends Observable implements ActionListener {
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
+
 	public void setTemperatura(double temperatura) {
 		this.temperatura = temperatura;
 	}

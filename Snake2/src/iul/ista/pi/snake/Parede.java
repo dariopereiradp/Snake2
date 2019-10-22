@@ -10,28 +10,36 @@ public class Parede {
 	
 	private int x;
 	private int y;
-	private int nParedes;
 	
 	public Parede() {
-//		x = (int) Math.round();
-//		y = (int) Math.round();
-		nParedes =  -1 + (int)(Math.random() * ((9 + 1)  + 1));
 		
+		generatePosition();
+//(int) Math.round();
 	}
 	
 	public Image getImg() {
 		return img;
 	}	
 	
-	public int nParedes() {
-		nParedes = 0 + (int)(Math.random() * ((9 - 0) + 1));
+	public int generateNParedes() {
+		int nParedes = 0 + (int)(Math.random() * ((9 - 0) + 1));
 		return nParedes;
 	}
 	
+	public void generatePosition() {
+		int r = (int) (Math.random() * Board.RAND_POS);
+		x = ((r * Board.DOT_SIZE));
+
+		r = (int) (Math.random() * Board.RAND_POS);
+		y = ((r * Board.DOT_SIZE));
+
+
+	}
+	
 	public int getX() {
-//	para arredondar int a = (int) Math.round(doubleVar)
 		return x;
 	}
+	
 	
 	public int getY() {
 		return y;

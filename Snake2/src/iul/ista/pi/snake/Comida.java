@@ -27,7 +27,6 @@ public class Comida {
 		y = ((r * Board.DOT_SIZE));
 
 
-
 	}
 
 
