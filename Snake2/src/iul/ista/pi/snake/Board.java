@@ -19,9 +19,6 @@ import javax.swing.Timer;
 
 public class Board extends Observable implements ActionListener {
 
-	private Enemy inimigo;
-	private int nParedes;
-	private JPanel panel;
 	public static final int B_WIDTH = 400;
 	public static final int B_HEIGHT = 400;
 	public static final int DOT_SIZE = 20;
@@ -33,11 +30,13 @@ public class Board extends Observable implements ActionListener {
 	private final int y[] = new int[ALL_DOTS];
 	private ArrayList<Parede> paredes;
 
+	private Enemy inimigo;
+	private int nParedes;
+	private JPanel panel;
 	private int dots;
 	private int pontos;
 	private double temperatura;
-	// private int apple_x;
-	// private int apple_y;
+	private int contador_num_comidas;
 
 	private boolean leftDirection = false;
 	private boolean rightDirection = true;
@@ -64,6 +63,9 @@ public class Board extends Observable implements ActionListener {
 
 	public void restart() {
 		DELAY = 100;
+		pontos = 0;
+		setChanged();
+		notifyObservers(pontos);
 		paredes = new ArrayList<>();
 		nParedes = Parede.generateNParedes();
 		for (int i = 0; i < nParedes; i++) {
@@ -103,8 +105,8 @@ public class Board extends Observable implements ActionListener {
 			y[z] = 60;
 		}
 
-		food.genaratePosition();
-		
+//		food.genaratePosition();
+
 		if (geraInimigo()) {
 			inimigo = new Enemy(food);
 		}
@@ -168,7 +170,7 @@ public class Board extends Observable implements ActionListener {
 
 			setChanged();
 			notifyObservers(new Integer(pontos));
-
+			food.generateType();
 			food.genaratePosition();
 			if (geraInimigo()) {
 				inimigo = new Enemy(food);
@@ -190,9 +192,9 @@ public class Board extends Observable implements ActionListener {
 	}
 
 	private void move() {
-		if (temperatura > 0) {
-			DELAY = 200 - (int)temperatura * 4;
-		}
+		timer.stop();
+		DELAY = 200 - (int) (temperatura * 8);
+		timer.start();
 
 		for (int z = dots; z > 0; z--) {
 			x[z] = x[(z - 1)];
@@ -234,7 +236,7 @@ public class Board extends Observable implements ActionListener {
 			if (x[0] == parede.getX() && y[0] == parede.getY())
 				inGame = false;
 		}
-		
+
 		if (y[0] >= B_HEIGHT) {
 			y[0] = 0;
 		}

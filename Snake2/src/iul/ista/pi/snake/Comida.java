@@ -6,17 +6,22 @@ public class Comida {
 
 	private int x;
 	private int y;
-	
-	
+
 	public Comida() {
 		genaratePosition();
 		generateType();
 	}
 
-	private void generateType() {
-		type = Food_Type.RED_APPLE;
-		// TODO Auto-generated method stub
-
+	public void generateType() {
+		double u = Math.random();
+		if (u <= 0.05)
+			type = Food_Type.RUBY;
+		else if (u > 0.05 && u <= 0.25)
+			type = Food_Type.CHERRY;
+		else if (u > 0.25 && u <= 0.55)
+			type = Food_Type.RED_APPLE;
+		else if (u > 0.55 && u <= 1)
+			type = Food_Type.PEAR;
 	}
 
 	public void genaratePosition() {
@@ -26,10 +31,7 @@ public class Comida {
 		r = (int) (Math.random() * Board.RAND_POS);
 		y = ((r * Board.DOT_SIZE));
 
-
 	}
-
-
 
 	public int getX() {
 		return x;
