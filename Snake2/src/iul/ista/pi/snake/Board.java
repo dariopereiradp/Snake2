@@ -19,31 +19,32 @@ import javax.swing.Timer;
 
 public class Board extends Observable implements ActionListener {
 
-	private Enemy inimigo;
-	private int nParedes;
-	private JPanel panel;
 	public static final int B_WIDTH = 400;
 	public static final int B_HEIGHT = 400;
 	public static final int DOT_SIZE = 20;
 	public static final int ALL_DOTS = 1600;
 	public static final int RAND_POS = 19;
+	private boolean pause = false;
 	private int DELAY = 100;
 
 	private final int x[] = new int[ALL_DOTS];
 	private final int y[] = new int[ALL_DOTS];
 	private ArrayList<Parede> paredes;
 
+	private Enemy inimigo;
+	private int nParedes;
+	private JPanel panel;
 	private int dots;
 	private int pontos;
 	private double temperatura;
-	// private int apple_x;
-	// private int apple_y;
+	private int contador_num_comidas;
 
 	private boolean leftDirection = false;
 	private boolean rightDirection = true;
 	private boolean upDirection = false;
 	private boolean downDirection = false;
 	private boolean inGame = true;
+	private boolean move_keys = true;
 
 	private Timer timer;
 	private Image ball;
@@ -52,35 +53,52 @@ public class Board extends Observable implements ActionListener {
 
 	public Board() {
 		panel = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4753510838643245080L;
+
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				// g.drawString("A", 50, 50);
 				doDrawing(g);
 			}
 		};
+		panel.addKeyListener(new TAdapter());
+		panel.setBackground(Color.BLACK);
+		panel.setFocusable(true);
+
+		panel.setMinimumSize(new Dimension(B_WIDTH, B_HEIGHT));
+		panel.setMaximumSize(new Dimension(B_WIDTH, B_HEIGHT));
+		panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 		restart();
 	}
+	
 
 	public void restart() {
 		DELAY = 100;
+		pontos = 0;
+		contador_num_comidas = 0;
+		Enemy.reset();
+		inimigo = null;
+		pause = false;
+		setChanged();
+		notifyObservers(pontos);
 		paredes = new ArrayList<>();
 		nParedes = Parede.generateNParedes();
 		for (int i = 0; i < nParedes; i++) {
 			paredes.add(new Parede());
 		}
 		food = new Comida();
+		do {
+			food.genaratePosition();
+		} while (hasParede(food.getX(), food.getY()));
 		initBoard();
 		inGame = true;
 	}
 
 	private void initBoard() {
 
-		panel.addKeyListener(new TAdapter());
-		panel.setBackground(Color.BLACK);
-		panel.setFocusable(true);
-
-		panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 		loadImages();
 		initGame();
 	}
@@ -96,6 +114,11 @@ public class Board extends Observable implements ActionListener {
 
 	private void initGame() {
 
+		leftDirection = false;
+		rightDirection = true;
+		upDirection = false;
+		downDirection = false;
+
 		dots = 3;
 
 		for (int z = 0; z < dots; z++) {
@@ -103,13 +126,12 @@ public class Board extends Observable implements ActionListener {
 			y[z] = 60;
 		}
 
-		food.genaratePosition();
-		
-		if (geraInimigo()) {
+		if (Enemy.geraInimigo()) {
 			inimigo = new Enemy(food);
 		}
 
-		if(timer != null) {timer.stop();}
+		if (timer != null)
+			timer.stop();
 		timer = new Timer(DELAY, this);
 		timer.start();
 	}
@@ -124,6 +146,7 @@ public class Board extends Observable implements ActionListener {
 				for (int i = 0; i < nParedes; i++) {
 					Parede parede = paredes.get(i);
 					g.drawImage(parede.getImg(), parede.getX(), parede.getY(), panel);
+
 				}
 			}
 
@@ -149,37 +172,41 @@ public class Board extends Observable implements ActionListener {
 	}
 
 	private void gameOver(Graphics g) {
-
 		String msg = "Game Over";
+		String msgPontos = "Pontua��o: " + pontos;
 		Font small = new Font("Helvetica", Font.BOLD, 14);
 		FontMetrics metr = panel.getFontMetrics(small);
 
 		g.setColor(Color.white);
 		g.setFont(small);
 		g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+		g.drawString(msgPontos, (B_WIDTH - metr.stringWidth(msgPontos)) / 2, B_HEIGHT / 2 + 20 );
 		timer.stop();
 	}
 
 	private void checkApple() {
 
 		if ((x[0] == food.getX()) && (y[0] == food.getY())) {
-
+			contador_num_comidas++;
+			System.out.println("N�mero de comidas: " + contador_num_comidas);
+			if (contador_num_comidas % 3 == 0) {
+				Enemy.change_probabilidades();
+			}
 			dots++;
 			pontos += food.getType().getPontos();
-
 			setChanged();
 			notifyObservers(new Integer(pontos));
+			food.generateType();
+			do {
+				food.genaratePosition();
+			} while (hasParede(food.getX(), food.getY()));
 
-			food.genaratePosition();
-			if (geraInimigo()) {
+			if (Enemy.geraInimigo()) {
 				inimigo = new Enemy(food);
+			} else {
+				inimigo = null;
 			}
 		}
-	}
-
-	private boolean geraInimigo() {
-		// TODO Auto-generated method stub
-		return true;
 	}
 
 	public void setTemperatura(double temperatura) {
@@ -191,9 +218,10 @@ public class Board extends Observable implements ActionListener {
 	}
 
 	private void move() {
-		if (temperatura > 0) {
-			DELAY = 200 - (int)temperatura * 4;
-		}
+		timer.stop();
+		DELAY = 200 - (int) (temperatura * 4);
+		timer = new Timer(DELAY, this);
+		timer.start();
 
 		for (int z = dots; z > 0; z--) {
 			x[z] = x[(z - 1)];
@@ -216,6 +244,9 @@ public class Board extends Observable implements ActionListener {
 			y[0] += DOT_SIZE;
 		}
 
+		if (!move_keys) {
+			move_keys = true;
+		}
 	}
 
 	private void checkCollision() {
@@ -227,7 +258,7 @@ public class Board extends Observable implements ActionListener {
 			}
 		}
 
-		if (x[0] == inimigo.getX() && y[0] == inimigo.getY())
+		if (inimigo != null && (x[0] == inimigo.getX() && y[0] == inimigo.getY()))
 			inGame = false;
 
 		for (int i = 0; i < nParedes; i++) {
@@ -235,21 +266,25 @@ public class Board extends Observable implements ActionListener {
 			if (x[0] == parede.getX() && y[0] == parede.getY())
 				inGame = false;
 		}
-		
-		if (y[0] >= B_HEIGHT) {
+
+		if (y[0] > (B_HEIGHT - 20)) {
 			y[0] = 0;
+			move_keys = false;
 		}
 
 		if (y[0] < 0) {
-			y[0] = B_HEIGHT;
+			y[0] = B_HEIGHT - 20;
+			move_keys = false;
 		}
 
-		if (x[0] >= B_WIDTH) {
+		if (x[0] > (B_WIDTH - 20)) {
 			x[0] = 0;
+			move_keys = false;
 		}
 
 		if (x[0] < 0) {
-			x[0] = B_WIDTH;
+			x[0] = B_WIDTH - 20;
+			move_keys = false;
 		}
 
 		if (!inGame) {
@@ -274,32 +309,38 @@ public class Board extends Observable implements ActionListener {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-
 			int key = e.getKeyCode();
+			if (move_keys) {
+				if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
+					leftDirection = true;
+					upDirection = false;
+					downDirection = false;
+				}
 
-			if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
-				leftDirection = true;
-				upDirection = false;
-				downDirection = false;
+				if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
+					rightDirection = true;
+					upDirection = false;
+					downDirection = false;
+				}
+
+				if ((key == KeyEvent.VK_UP) && (!downDirection)) {
+					upDirection = true;
+					rightDirection = false;
+					leftDirection = false;
+				}
+
+				if ((key == KeyEvent.VK_DOWN) && (!upDirection)) {
+					downDirection = true;
+					rightDirection = false;
+					leftDirection = false;
+				}
 			}
 
-			if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
-				rightDirection = true;
-				upDirection = false;
-				downDirection = false;
-			}
+			if (key == KeyEvent.VK_R)
+				restart();
 
-			if ((key == KeyEvent.VK_UP) && (!downDirection)) {
-				upDirection = true;
-				rightDirection = false;
-				leftDirection = false;
-			}
-
-			if ((key == KeyEvent.VK_DOWN) && (!upDirection)) {
-				downDirection = true;
-				rightDirection = false;
-				leftDirection = false;
-			}
+			if (key == KeyEvent.VK_P)
+				pausar();
 		}
 	}
 
@@ -307,7 +348,31 @@ public class Board extends Observable implements ActionListener {
 		return timer;
 	}
 
+	public void pausar() {
+		System.out.println(pause);
+		if (!pause) {
+			getTimer().stop();
+			pause = true;
+		} else {
+			getTimer().start();
+			pause = false;
+		}
+
+	}
+
 	public JPanel getPanel() {
 		return panel;
+	}
+	
+	public boolean isPause() {
+		return pause;
+	}
+
+	public boolean hasParede(int x, int y) {
+		for (int i = 0; i < nParedes; i++) {
+			if (paredes.get(i).getX() == x && paredes.get(i).getY() == y)
+				return true;
+		}
+		return false;
 	}
 }

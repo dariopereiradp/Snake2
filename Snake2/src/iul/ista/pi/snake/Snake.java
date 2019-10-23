@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.JLabel;
@@ -14,12 +16,10 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Snake extends JFrame implements Observer {
-
-	/**
-	 * 
-	 */
 
 	private static final long serialVersionUID = 4304994289171574723L;
 	private static Snake INSTANCE;
@@ -28,7 +28,6 @@ public class Snake extends JFrame implements Observer {
 	private Temperatura temp;
 
 	private Snake() {
-
 		initUI();
 	}
 
@@ -38,8 +37,8 @@ public class Snake extends JFrame implements Observer {
 		board.addObserver(this);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
-
-		getContentPane().add(board.getPanel());
+		
+		getContentPane().add(board.getPanel(), BorderLayout.CENTER);
 
 		JPanel panel_info = new JPanel();
 		getContentPane().add(panel_info, BorderLayout.NORTH);
@@ -62,14 +61,13 @@ public class Snake extends JFrame implements Observer {
 
 		temperatura = new JLabel();
 		panel_temperatura.add(temperatura);
-		
 
 		int delay = 1000;
 		ActionListener taskPerformer = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(board.isInGame()) {
+				if(board.isInGame() && !board.isPause()) {
 					temp = new Temperatura();
 					temperatura.setText(temp.toString());
 					board.setTemperatura(temp.getValor());
@@ -80,11 +78,9 @@ public class Snake extends JFrame implements Observer {
 		JLabel lblc = new JLabel("\u00BAC");
 		panel_temperatura.add(lblc);
 
-		setResizable(false);
-		pack();
-
 		setTitle("Snake");
-		setLocationRelativeTo(null);
+//		setLocationRelativeTo(null);
+		setLocation(300, 100);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -122,8 +118,11 @@ public class Snake extends JFrame implements Observer {
 			}
 		});
 		mnAjuda.add(mntmSobre);
+		setResizable(false);
+		pack();
 	}
 
+	
 	public JLabel getPontos() {
 		return pontos;
 	}
@@ -151,8 +150,7 @@ public class Snake extends JFrame implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		if (arg1 instanceof Integer) {
 			pontos.setText(String.valueOf(arg1));
-		}
-		else if (arg1 instanceof Double){
+		} else if (arg1 instanceof Double) {
 			temperatura.setText(String.valueOf(arg1));
 		}
 
