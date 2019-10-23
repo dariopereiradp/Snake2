@@ -247,6 +247,7 @@ public class Board extends Observable implements ActionListener {
 		if (!move_keys) {
 			move_keys = true;
 		}
+		
 	}
 
 	private void checkCollision() {

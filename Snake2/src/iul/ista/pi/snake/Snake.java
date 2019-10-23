@@ -35,6 +35,7 @@ public class Snake extends JFrame implements Observer {
 
 		board = new Board();
 		board.addObserver(this);
+		temp = new Temperatura();
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -61,8 +62,8 @@ public class Snake extends JFrame implements Observer {
 
 		temperatura = new JLabel();
 		panel_temperatura.add(temperatura);
+		
 
-		int delay = 1000;
 		ActionListener taskPerformer = new ActionListener() {
 
 			@Override
@@ -74,7 +75,9 @@ public class Snake extends JFrame implements Observer {
 				}
 			}};
 			
-		new Timer(delay, taskPerformer).start();
+		Timer timer= new Timer(10000,taskPerformer);
+		timer.setInitialDelay(0);
+		timer.restart();
 		JLabel lblc = new JLabel("\u00BAC");
 		panel_temperatura.add(lblc);
 
