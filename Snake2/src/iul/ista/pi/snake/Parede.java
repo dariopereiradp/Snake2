@@ -11,14 +11,6 @@ public class Parede {
 	private int x;
 	private int y;
 
-	/*
-	 * 1/125 *( 0 + (int) (Math.random() * ((50 - 0) + 1)) 1/1500 * ( 50 + (int)
-	 * (Math.random() * ((350 - 50) + 1))) 1/125 * ( 350 + (int) (Math.random() *
-	 * ((400 - 350) + 1)))
-	 * 
-	 * 
-	 */
-
 	public Parede() {
 		generatePosition();
 	}
