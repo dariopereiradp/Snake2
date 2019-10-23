@@ -24,6 +24,7 @@ public class Board extends Observable implements ActionListener {
 	public static final int DOT_SIZE = 20;
 	public static final int ALL_DOTS = 1600;
 	public static final int RAND_POS = 19;
+	private boolean pause = false;
 	private int DELAY = 100;
 
 	private final int x[] = new int[ALL_DOTS];
@@ -63,8 +64,16 @@ public class Board extends Observable implements ActionListener {
 				doDrawing(g);
 			}
 		};
+		panel.addKeyListener(new TAdapter());
+		panel.setBackground(Color.BLACK);
+		panel.setFocusable(true);
+
+		panel.setMinimumSize(new Dimension(B_WIDTH, B_HEIGHT));
+		panel.setMaximumSize(new Dimension(B_WIDTH, B_HEIGHT));
+		panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 		restart();
 	}
+	
 
 	public void restart() {
 		DELAY = 100;
@@ -72,6 +81,7 @@ public class Board extends Observable implements ActionListener {
 		contador_num_comidas = 0;
 		Enemy.reset();
 		inimigo = null;
+		pause = false;
 		setChanged();
 		notifyObservers(pontos);
 		paredes = new ArrayList<>();
@@ -89,13 +99,6 @@ public class Board extends Observable implements ActionListener {
 
 	private void initBoard() {
 
-		panel.addKeyListener(new TAdapter());
-		panel.setBackground(Color.BLACK);
-		panel.setFocusable(true);
-
-		panel.setMinimumSize(new Dimension(B_WIDTH, B_HEIGHT));
-		panel.setMaximumSize(new Dimension(B_WIDTH, B_HEIGHT));
-		panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 		loadImages();
 		initGame();
 	}
@@ -170,12 +173,14 @@ public class Board extends Observable implements ActionListener {
 
 	private void gameOver(Graphics g) {
 		String msg = "Game Over";
+		String msgPontos = "Pontuação: " + pontos;
 		Font small = new Font("Helvetica", Font.BOLD, 14);
 		FontMetrics metr = panel.getFontMetrics(small);
 
 		g.setColor(Color.white);
 		g.setFont(small);
 		g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+		g.drawString(msgPontos, (B_WIDTH - metr.stringWidth(msgPontos)) / 2, B_HEIGHT / 2 + 20 );
 		timer.stop();
 	}
 
@@ -262,7 +267,7 @@ public class Board extends Observable implements ActionListener {
 				inGame = false;
 		}
 
-		if (y[0] > (B_HEIGHT-20)) {
+		if (y[0] > (B_HEIGHT - 20)) {
 			y[0] = 0;
 			move_keys = false;
 		}
@@ -272,7 +277,7 @@ public class Board extends Observable implements ActionListener {
 			move_keys = false;
 		}
 
-		if (x[0] > (B_WIDTH-20)) {
+		if (x[0] > (B_WIDTH - 20)) {
 			x[0] = 0;
 			move_keys = false;
 		}
@@ -330,6 +335,12 @@ public class Board extends Observable implements ActionListener {
 					leftDirection = false;
 				}
 			}
+
+			if (key == KeyEvent.VK_R)
+				restart();
+
+			if (key == KeyEvent.VK_P)
+				pausar();
 		}
 	}
 
@@ -337,8 +348,24 @@ public class Board extends Observable implements ActionListener {
 		return timer;
 	}
 
+	public void pausar() {
+		System.out.println(pause);
+		if (!pause) {
+			getTimer().stop();
+			pause = true;
+		} else {
+			getTimer().start();
+			pause = false;
+		}
+
+	}
+
 	public JPanel getPanel() {
 		return panel;
+	}
+	
+	public boolean isPause() {
+		return pause;
 	}
 
 	public boolean hasParede(int x, int y) {
