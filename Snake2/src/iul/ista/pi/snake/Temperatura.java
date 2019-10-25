@@ -1,25 +1,42 @@
 package iul.ista.pi.snake;
 
 import java.text.DecimalFormat;
-import java.lang.Math;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.*;
 
 public class Temperatura {
-	private static final int media = 25;
-	private static final int sigma = 5;
+	//private static final int media = 25;
+	//private static final int sigma = 5;
 	private double valor;
 
 	public Temperatura() {
 		this.valor = generateTemp();
 		}
 
+	//public double generateTemp(){
+	//	double p1,p2,p;
+	//	do{
+	//		p1 = -1 + (1+1)* Math.random();
+	//		p2 = -1 + (1+1)* Math.random();
+	//		p = p1*p1 + p2*p2;
+	//	}while(p >= 1);
+	//	return media + sigma * p1 * Math.sqrt(-2 * Math.log(p) /p);
+	//}
+
 	public double generateTemp(){
-		double p1,p2,p;
-		do{
-			p1 = -1 + (1+1)* Math.random();
-			p2 = -1 + (1+1)* Math.random();
-			p = p1*p1 + p2*p2;
-		}while(p >= 1);
-		return media + sigma * p1 * Math.sqrt(-2 * Math.log(p) /p);
+		double x = 0;
+		try {
+			String s = null;
+			Process p = Runtime.getRuntime().exec("python3 tnormal.py 25 5 15 35");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			x = Double.parseDouble(in.readLine());
+		}
+		catch(IOException ie) {
+			ie.printStackTrace();
+		}
+		return x;
 	}
 
 	public double getValor() {
