@@ -173,14 +173,16 @@ public class Board extends Observable implements ActionListener {
 
 	private void gameOver(Graphics g) {
 		String msg = "Game Over";
-		String msgPontos = "Pontua��o: " + pontos;
+		String msgPontos = "Pontuacao: " + pontos;
+		String msgRestart = "Press 'r' to restart";
 		Font small = new Font("Helvetica", Font.BOLD, 14);
 		FontMetrics metr = panel.getFontMetrics(small);
 
 		g.setColor(Color.white);
 		g.setFont(small);
-		g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
-		g.drawString(msgPontos, (B_WIDTH - metr.stringWidth(msgPontos)) / 2, B_HEIGHT / 2 + 20 );
+		g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2 - 20);
+		g.drawString(msgPontos, (B_WIDTH - metr.stringWidth(msgPontos)) / 2, B_HEIGHT / 2 );
+		g.drawString(msgRestart, (B_WIDTH - metr.stringWidth(msgRestart)) / 2, B_HEIGHT / 2 + 20);
 		timer.stop();
 	}
 
@@ -188,7 +190,7 @@ public class Board extends Observable implements ActionListener {
 
 		if ((x[0] == food.getX()) && (y[0] == food.getY())) {
 			contador_num_comidas++;
-			System.out.println("N�mero de comidas: " + contador_num_comidas);
+			System.out.println("Numero de comidas: " + contador_num_comidas);
 			if (contador_num_comidas % 3 == 0) {
 				Enemy.change_probabilidades();
 			}

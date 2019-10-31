@@ -75,7 +75,7 @@ public class Snake extends JFrame implements Observer {
 				}
 			}};
 			
-		Timer timer= new Timer(10000,taskPerformer);
+		Timer timer= new Timer(5000,taskPerformer);
 		timer.setInitialDelay(0);
 		timer.restart();
 		JLabel lblc = new JLabel("\u00BAC");
