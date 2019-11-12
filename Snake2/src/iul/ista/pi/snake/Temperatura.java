@@ -1,10 +1,6 @@
 package iul.ista.pi.snake;
 
 import java.text.DecimalFormat;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.*;
 
 public class Temperatura {
 	private static final int media = 25;
@@ -15,7 +11,7 @@ public class Temperatura {
 		this.valor = generateTemp();
 	}
 
-	public double generateTemp() {
+	public static double generateTemp() {
 		double u = Math.random();
 		if (u < 0.025)
 			return 15;
@@ -25,7 +21,7 @@ public class Temperatura {
 			return generateTemp1();
 	}
 
-	public double generateTemp1() {
+	public static double generateTemp1() {
 		double value = 0.0;
 		do {
 			double p1, p2, p;
@@ -39,6 +35,14 @@ public class Temperatura {
 		} while (value <= 15 || value >= 35);
 		return value;
 
+	}
+
+	public static double[] getHistogramData() {
+		double [] data = new double[1000000];
+		for (int i = 0; i < 1000000; i++) {
+			data[i] = generateTemp();
+		}
+		return data;
 	}
 
 	// public double generateTemp(){

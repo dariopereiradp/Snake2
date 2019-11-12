@@ -25,40 +25,41 @@ public class Parede {
 	}
 
 	public void generatePosition() {
-		double u = Math.random();
-		double k = Math.random();
-//		int r = (int) (Math.random() * Board.RAND_POS);
-//		x = ((r * Board.DOT_SIZE));
-		if (u <= 0.4)
-			x = round20( 0 + (int) (Math.random() * ((50 - 0) + 1)));
-		else {
-			if (u <= 0.8)
-				x = round20(350 + (int) (Math.random() * ((400 - 350) + 1)));
-			else
-				x = round20(50 + (int) (Math.random() * (350 - 50) + 1));
-		}
-
-		if (k <= 0.4)
-			y = round20(0 + (int) (Math.random() * ((50 - 0) + 1)));
-		else {
-			if (k <= 0.8)
-				y = round20(350 + (int) (Math.random() * ((400 - 350) + 1)));
-			else
-				y = round20(50 + (int) (Math.random() * (350 - 50) + 1));
-		}
-		
+		x = round20((int) generateRandomPosition());
+		y = round20((int) generateRandomPosition());
 	}
 
-	public static Integer round20(Integer b){
-        return b - (b%Board.DOT_SIZE);
-    }
-	
+	public static double generateRandomPosition() {
+		double u = Math.random();
+		if (u <= 0.4)
+			return 0 + (Math.random() * ((50 - 0) + 1));
+		else {
+			if (u <= 0.8)
+				return 350 + (Math.random() * ((400 - 350) + 1));
+			else
+				return 50 + (Math.random() * (350 - 50) + 1);
+		}
+	}
+
+	public static Integer round20(Integer b) {
+		return b - (b % Board.DOT_SIZE);
+	}
+
 	public int getX() {
 		return x;
 	}
 
 	public int getY() {
 		return y;
+	}
+
+	public static double[] getHistogramData() {
+		double[] data = new double[1000000];
+		for (int i = 0; i < 1000000; i++) {
+			data[i] = generateRandomPosition();
+			// System.out.println(data.get(i));
+		}
+		return data;
 	}
 
 }
