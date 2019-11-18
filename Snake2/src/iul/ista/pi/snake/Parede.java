@@ -53,11 +53,18 @@ public class Parede {
 		return y;
 	}
 
-	public static double[] getHistogramData() {
+	public static double[] getHistogramDataPos() {
 		double[] data = new double[1000000];
 		for (int i = 0; i < 1000000; i++) {
 			data[i] = generateRandomPosition();
-			// System.out.println(data.get(i));
+		}
+		return data;
+	}
+
+	public static double[] getHistogramDataNumber() {
+		double[] data = new double[100000];
+		for (int i = 0; i < 100000; i++) {
+			data[i] = (double) generateNParedes();
 		}
 		return data;
 	}
