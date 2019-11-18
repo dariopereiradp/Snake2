@@ -1,5 +1,7 @@
 package iul.ista.pi.snake;
 
+import javax.annotation.Generated;
+
 public class Comida {
 
 	private Food_Type type;
@@ -43,5 +45,15 @@ public class Comida {
 
 	public Food_Type getType() {
 		return type;
+	}
+	
+	public static double[] getHistogramData() {
+		double [] data = new double[100];
+		Comida comida;
+		for (int i = 0; i < 100; i++) {
+			comida=new Comida();
+			data[i] = (double)comida.getType().getPontos();
+		}
+		return data;
 	}
 }

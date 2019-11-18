@@ -79,6 +79,9 @@ public class HistogramTests extends JFrame {
 		final ChartPanel posParedesY = new ChartPanel(posicaoParedeY(), true, true, true, true, true);
 		posParedesX.setPreferredSize(new java.awt.Dimension(500, 270));
 		
+		final ChartPanel foodPoints = new ChartPanel (foodPoints(), true, true, true, true, true);
+		foodPoints.setPreferredSize(new java.awt.Dimension(500, 270));
+		
 		JPanel posParedesPanel = new JPanel(new GridLayout(2, 1));
 		
 		posParedesPanel.add(posParedesX);
@@ -86,7 +89,7 @@ public class HistogramTests extends JFrame {
 
 		tabbedPane.add("Temperatura", tempPanel);
 		tabbedPane.add("Posição das paredes", posParedesPanel);
-
+		tabbedPane.add("Pontuação da Comida", foodPoints);
 	}
 
 	public JFreeChart temperatura() {
@@ -152,14 +155,64 @@ public class HistogramTests extends JFrame {
 		HistogramDataset datasetHistogram = new HistogramDataset();
 		datasetHistogram.setType(HistogramType.SCALE_AREA_TO_1);
 
-		datasetHistogram.addSeries("Histograma", Parede.getHistogramData(), 500);
+		datasetHistogram.addSeries("Histograma", Parede.getHistogramData(), 50);
+		
+		final XYItemRenderer renderer1 = new XYBarRenderer(0.2);
+		renderer1.setDefaultToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new DecimalFormat("0.00000"), new DecimalFormat("0.00000")));
+		final NumberAxis x = new NumberAxis("Y");
+		final ValueAxis y = new NumberAxis("p(y)");
+		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
+		
+		final XYItemRenderer renderer2 = new StandardXYItemRenderer();
+		renderer2.setDefaultToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new DecimalFormat("0.00000"), new DecimalFormat("0.00000")));
+		plot.setDataset(1, getDatasetPosParedes());
+		plot.setRenderer(1, renderer2);
 
-		JFreeChart chart = ChartFactory.createHistogram("Posição das paredes em Y", "y", "p(y)", datasetHistogram,
-				PlotOrientation.VERTICAL, true, true, true);
+		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
+		
+		return new JFreeChart("Posição das paredes em y", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
-		return chart;
+		// JFreeChart chart = ChartFactory.createHistogram("Posição das paredes em Y", "y", "p(y)", datasetHistogram,
+			// PlotOrientation.VERTICAL, true, true, true);
+
+		// return chart;
 	}
 	
+	public JFreeChart foodPoints() {
+		HistogramDataset datasetHistogram = new HistogramDataset();
+		datasetHistogram.setType(HistogramType.SCALE_AREA_TO_1);
+
+		datasetHistogram.addSeries("Histograma", Comida.getHistogramData(), 500);
+		
+		final XYItemRenderer renderer1 = new XYBarRenderer(0.2);
+		renderer1.setDefaultToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new DecimalFormat("0.000"), new DecimalFormat("0.000")));
+		final NumberAxis x = new NumberAxis("X");
+		final ValueAxis y = new NumberAxis("Y");
+		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
+		
+		return new JFreeChart("Pontuação da comida", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+	}
+	
+//	public XYDataset getDatasetFood() {
+//		XYSeries serie = new XYSeries("Pontuação da comida");
+//		for(int i=0; i<10; i++) {
+//			if(i==10)
+//				serie.add(i,0.05);
+//			else if(i==6)
+//				serie.add(i, 0.2);
+//			else if(i==3)
+//				serie.add(i,0.3);
+//			else if(i==1)
+//				serie.add(i,0.45);
+//		}
+		
+//		XYSeriesCollection dataset = new XYSeriesCollection(serie);
+//		return dataset;
+//	}
+//	
 	public XYDataset getDatasetPosParedes(){
 		XYSeries serie = new XYSeries("Posição das paredes");
 		for (int i=0; i<50; i++)
