@@ -51,7 +51,10 @@ public class Board extends Observable implements ActionListener {
 	private Comida food;
 	private Image head;
 
-	public Board() {
+	private static Board INSTANCE;
+
+	private Board() {
+		INSTANCE = this;
 		panel = new JPanel() {
 			/**
 			 * 
@@ -73,7 +76,6 @@ public class Board extends Observable implements ActionListener {
 		panel.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 		restart();
 	}
-	
 
 	public void restart() {
 		DELAY = 100;
@@ -181,7 +183,7 @@ public class Board extends Observable implements ActionListener {
 		g.setColor(Color.white);
 		g.setFont(small);
 		g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2 - 20);
-		g.drawString(msgPontos, (B_WIDTH - metr.stringWidth(msgPontos)) / 2, B_HEIGHT / 2 );
+		g.drawString(msgPontos, (B_WIDTH - metr.stringWidth(msgPontos)) / 2, B_HEIGHT / 2);
 		g.drawString(msgRestart, (B_WIDTH - metr.stringWidth(msgRestart)) / 2, B_HEIGHT / 2 + 20);
 		timer.stop();
 	}
@@ -249,7 +251,7 @@ public class Board extends Observable implements ActionListener {
 		if (!move_keys) {
 			move_keys = true;
 		}
-		
+
 	}
 
 	private void checkCollision() {
@@ -366,7 +368,7 @@ public class Board extends Observable implements ActionListener {
 	public JPanel getPanel() {
 		return panel;
 	}
-	
+
 	public boolean isPause() {
 		return pause;
 	}
@@ -377,5 +379,11 @@ public class Board extends Observable implements ActionListener {
 				return true;
 		}
 		return false;
+	}
+
+	public static Board getINSTANCE() {
+		if (INSTANCE == null)
+			new Board();
+		return INSTANCE;
 	}
 }

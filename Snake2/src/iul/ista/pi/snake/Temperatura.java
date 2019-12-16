@@ -45,24 +45,6 @@ public class Temperatura {
 		return data;
 	}
 
-	// public double generateTemp(){
-	// double x = 0;
-	// try {
-	// String s = null;
-	//// Process p = Runtime.getRuntime().exec("python3 tnormal.py 25 5 15 35");
-	// Process p = Runtime.getRuntime().exec("python /c start python tnormal.py
-	// 25 5 15 35");
-	//
-	// BufferedReader in = new BufferedReader(new
-	// InputStreamReader(p.getInputStream()));
-	// x = Double.parseDouble(in.readLine());
-	// }
-	// catch(IOException ie) {
-	// ie.printStackTrace();
-	// }
-	// return x;
-	// }
-
 	public double getValor() {
 		return valor;
 	}

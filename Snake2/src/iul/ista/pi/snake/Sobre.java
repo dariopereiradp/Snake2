@@ -73,7 +73,6 @@ public class Sobre extends JDialog {
 
 		JScrollPane jsp = new JScrollPane(sobre);
 		contentPanel.add(jsp, BorderLayout.CENTER);
-		// jsp.setViewportView(sobre);
 
 		JLabel lblVerso = new JLabel("Vers\u00E3o 1.0 - 12 de Dezembro de 2019");
 		lblVerso.setHorizontalAlignment(SwingConstants.CENTER);
@@ -85,7 +84,6 @@ public class Sobre extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
-				// okButton.setActionCommand("OK");
 				okButton.addActionListener(new ActionListener() {
 
 					@Override

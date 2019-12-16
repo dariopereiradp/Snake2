@@ -46,9 +46,9 @@ public class Comida {
 	}
 	
 	public static double[] getHistogramDataPontos() {
-		double [] data = new double[100000];
+		double [] data = new double[1000000];
 		Comida comida;
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 1000000; i++) {
 			comida=new Comida();
 			data[i] = (double)comida.getType().getPontos();
 		}
@@ -56,9 +56,9 @@ public class Comida {
 	}
 	
 	public static double[] getHistogramDataPosition() {
-		double [] data = new double[100000];
+		double [] data = new double[1000000];
 		Comida comida;
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 1000000; i++) {
 			comida=new Comida();
 			data[i] = (double)comida.getX();
 		}

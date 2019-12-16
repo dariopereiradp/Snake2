@@ -79,8 +79,8 @@ public class Enemy {
 	}
 	
 	public static double[] getHistogramData() {
-		double [] data = new double[10000];
-		for (int i = 0; i < 10000; i++) {
+		double [] data = new double[1000000];
+		for (int i = 0; i < 1000000; i++) {
 			if(geraInimigo())
 				data[i] = 1;
 			else

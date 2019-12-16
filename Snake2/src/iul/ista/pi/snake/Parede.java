@@ -54,16 +54,16 @@ public class Parede {
 	}
 
 	public static double[] getHistogramDataPos() {
-		double[] data = new double[1000000];
-		for (int i = 0; i < 1000000; i++) {
+		double[] data = new double[10000000];
+		for (int i = 0; i < 10000000; i++) {
 			data[i] = generateRandomPosition();
 		}
 		return data;
 	}
 
 	public static double[] getHistogramDataNumber() {
-		double[] data = new double[100000];
-		for (int i = 0; i < 100000; i++) {
+		double[] data = new double[1000000];
+		for (int i = 0; i < 1000000; i++) {
 			data[i] = (double) generateNParedes();
 		}
 		return data;

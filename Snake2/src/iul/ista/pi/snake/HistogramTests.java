@@ -1,10 +1,11 @@
 package iul.ista.pi.snake;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
@@ -28,7 +29,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class HistogramTests extends JFrame {
+public class HistogramTests extends JDialog {
 
 	/**
 	 * 
@@ -37,27 +38,19 @@ public class HistogramTests extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HistogramTests frame = new HistogramTests();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public HistogramTests() {
 		XYBarRenderer.setDefaultShadowsVisible(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent we) {
+				Board.getINSTANCE().getTimer().stop();
+				dispose();
+				Board.getINSTANCE().getTimer().start();
+			}
+		});
 		setBounds(100, 100, 1000, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -66,39 +59,30 @@ public class HistogramTests extends JFrame {
 
 		JTabbedPane tabbedPane = new JTabbedPane();
 		contentPane.add(tabbedPane);
-
+		
 		final ChartPanel tempPanel = new ChartPanel(temperatura(), true, true, true, true, true);
 		tempPanel.setPreferredSize(new java.awt.Dimension(700, 270));
-
-		final ChartPanel posParedesX = new ChartPanel(posicaoParedeX(), true, true, true, true, true);
-		posParedesX.setPreferredSize(new java.awt.Dimension(700, 270));
-
-//		final ChartPanel posParedesY = new ChartPanel(posicaoParedeY(), true, true, true, true, true);
-//		posParedesX.setPreferredSize(new java.awt.Dimension(700, 270));
 
 		final ChartPanel foodPoints = new ChartPanel(foodPoints(), true, true, true, true, true);
 		foodPoints.setPreferredSize(new java.awt.Dimension(700, 270));
 
 		final ChartPanel numberParedes = new ChartPanel(numberParedes(), true, true, true, true, true);
 		foodPoints.setPreferredSize(new java.awt.Dimension(700, 270));
-		
+
 		final ChartPanel numberInimigos = new ChartPanel(numeroInimigos(), true, true, true, true, true);
 		foodPoints.setPreferredSize(new java.awt.Dimension(700, 270));
-		
+
 		final ChartPanel posicaoComidas = new ChartPanel(posicaoComida(), true, true, true, true, true);
 		foodPoints.setPreferredSize(new java.awt.Dimension(700, 270));
-
-//		JPanel posParedesPanel = new JPanel(new GridLayout(2, 1));
-
-//		posParedesPanel.add(posParedesX);
-//		posParedesPanel.add(posParedesY);
-
-		tabbedPane.add("Temperatura", tempPanel);
-		tabbedPane.add("Posição das paredes", posParedesX);
 		tabbedPane.add("Pontuação da comida", foodPoints);
 		tabbedPane.add("Número de paredes", numberParedes);
 		tabbedPane.add("Número de inimigos", numberInimigos);
-		tabbedPane.add("Posição da comida", posicaoComidas);
+		tabbedPane.add("Posição da comida", posicaoComidas);		
+		tabbedPane.add("Temperatura", tempPanel);
+		
+				final ChartPanel posParedesX = new ChartPanel(posicaoParedeX(), true, true, true, true, true);
+				posParedesX.setPreferredSize(new java.awt.Dimension(700, 270));
+				tabbedPane.add("Posição das paredes", posParedesX);
 	}
 
 	public JFreeChart temperatura() {
@@ -117,7 +101,7 @@ public class HistogramTests extends JFrame {
 
 		final NumberAxis x = new NumberAxis("X");
 		x.setRange(13, 38);
-		final ValueAxis y = new NumberAxis("Y");
+		final ValueAxis y = new NumberAxis("p(x)");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 		plot.setDomainGridlinesVisible(false);
 		plot.setRangeGridlinesVisible(false);
@@ -131,7 +115,7 @@ public class HistogramTests extends JFrame {
 
 		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
-		return new JFreeChart("Temperatura Ambiente (1000000 amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("Temperatura Ambiente (1.000.000 amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
 
 	public JFreeChart posicaoParedeX() {
@@ -158,35 +142,9 @@ public class HistogramTests extends JFrame {
 
 		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
-		return new JFreeChart("Posição das paredes em x (igual em y) (1000000 amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("Posição das paredes em x (igual em y) (10.000.000 amostras)", JFreeChart.DEFAULT_TITLE_FONT,
+				plot, true);
 	}
-
-//	public JFreeChart posicaoParedeY() {
-//		HistogramDataset datasetHistogram = new HistogramDataset();
-//		datasetHistogram.setType(HistogramType.SCALE_AREA_TO_1);
-//
-//		datasetHistogram.addSeries("Histograma", Parede.getHistogramDataPos(), 1000);
-//
-//		final XYItemRenderer renderer1 = new XYBarRenderer(0.2);
-//		renderer1.setDefaultToolTipGenerator(
-//				new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-//						new DecimalFormat("0.00000"), new DecimalFormat("0.00000")));
-//		final NumberAxis x = new NumberAxis("Y");
-//		final ValueAxis y = new NumberAxis("p(y)");
-//		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
-//
-//		final XYItemRenderer renderer2 = new StandardXYItemRenderer();
-//		renderer2.setDefaultToolTipGenerator(
-//				new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-//						new DecimalFormat("0.00000"), new DecimalFormat("0.00000")));
-//		plot.setDataset(1, getDatasetPosParedes());
-//		plot.setRenderer(1, renderer2);
-//
-//		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
-//
-//		return new JFreeChart("Posição das paredes em y (1000000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot,
-//				true);
-//	}
 
 	public XYDataset getDatasetPosParedes() {
 		XYSeries serie = new XYSeries("Posição das paredes");
@@ -218,19 +176,14 @@ public class HistogramTests extends JFrame {
 		final ValueAxis y = new NumberAxis("Frequência relativa");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 
-		return new JFreeChart("Pontuação das comidas (100000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-
-		// return ChartFactory.createHistogram("Pontuação das comidas (100000
-		// amostras)", "Pontuação",
-		// "Frequencia relativa", datasetHistogram, PlotOrientation.VERTICAL,
-		// true, true, true);
+		return new JFreeChart("Pontuação das comidas (1.000.000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
 
 	public JFreeChart numberParedes() {
 		HistogramDataset datasetHistogram = new HistogramDataset();
 		datasetHistogram.setType(HistogramType.RELATIVE_FREQUENCY);
 
-		datasetHistogram.addSeries("Histograma", Parede.getHistogramDataNumber(), 100000);
+		datasetHistogram.addSeries("Histograma", Parede.getHistogramDataNumber(), 1000000);
 
 		final XYItemRenderer renderer1 = new XYBarRenderer();
 
@@ -242,14 +195,14 @@ public class HistogramTests extends JFrame {
 		final ValueAxis y = new NumberAxis("Frequência relativa");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 
-		return new JFreeChart("Número de paredes (100000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("Número de paredes (1.000.000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
-	
+
 	public JFreeChart numeroInimigos() {
 		HistogramDataset datasetHistogram = new HistogramDataset();
 		datasetHistogram.setType(HistogramType.RELATIVE_FREQUENCY);
 
-		datasetHistogram.addSeries("Histograma", Enemy.getHistogramData(), 10000);
+		datasetHistogram.addSeries("Histograma", Enemy.getHistogramData(), 100000);
 
 		final XYItemRenderer renderer1 = new XYBarRenderer();
 
@@ -261,9 +214,10 @@ public class HistogramTests extends JFrame {
 		final ValueAxis y = new NumberAxis("Frequência relativa");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 
-		return new JFreeChart("Número de inimigos (10000 de amostras, situação inicial)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("Número de inimigos (1.000.000 de amostras, situação inicial)", JFreeChart.DEFAULT_TITLE_FONT,
+				plot, true);
 	}
-	
+
 	public JFreeChart posicaoComida() {
 		HistogramDataset datasetHistogram = new HistogramDataset();
 		datasetHistogram.setType(HistogramType.RELATIVE_FREQUENCY);
@@ -280,7 +234,8 @@ public class HistogramTests extends JFrame {
 		final ValueAxis y = new NumberAxis("Frequência relativa");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 
-		return new JFreeChart("Posição da comida em X (igual para Y) (100000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("Posição da comida em X (igual para Y) (1.000.000 de amostras) - arredondado para múltiplos de 20",
+				JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
 
 }
