@@ -107,10 +107,10 @@ public class Board extends Observable implements ActionListener {
 
 	private void loadImages() {
 
-		ImageIcon iid = new ImageIcon("resources/dot.png");
+		ImageIcon iid =  new ImageIcon(getClass().getClassLoader().getResource("dot.png"));
 		ball = iid.getImage();
 
-		ImageIcon iih = new ImageIcon("resources/head.png");
+		ImageIcon iih = new ImageIcon(getClass().getClassLoader().getResource("head.png"));
 		head = iih.getImage();
 	}
 
@@ -345,7 +345,7 @@ public class Board extends Observable implements ActionListener {
 				restart();
 
 			if (key == KeyEvent.VK_P)
-				pausar();
+				pauseAndPlay();
 		}
 	}
 
@@ -353,7 +353,7 @@ public class Board extends Observable implements ActionListener {
 		return timer;
 	}
 
-	public void pausar() {
+	public void pauseAndPlay() {
 		System.out.println(pause);
 		if (!pause) {
 			getTimer().stop();
@@ -385,5 +385,9 @@ public class Board extends Observable implements ActionListener {
 		if (INSTANCE == null)
 			new Board();
 		return INSTANCE;
+	}
+	
+	public int getContador_num_comidas() {
+		return contador_num_comidas;
 	}
 }

@@ -39,7 +39,6 @@ public class StartMenu {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.getContentPane().setLayout(null);
-//		frame.setBounds(250,250,300,200);
 		frame.setSize(300, 200);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);

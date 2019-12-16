@@ -46,9 +46,11 @@ public class HistogramTests extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-				Board.getINSTANCE().getTimer().stop();
 				dispose();
-				Board.getINSTANCE().getTimer().start();
+				if (!Snake.getInstance().isVisible())
+					StartMenu.getInstance().open();
+				else
+					Board.getINSTANCE().pauseAndPlay();
 			}
 		});
 		setBounds(100, 100, 1000, 600);
@@ -59,7 +61,7 @@ public class HistogramTests extends JDialog {
 
 		JTabbedPane tabbedPane = new JTabbedPane();
 		contentPane.add(tabbedPane);
-		
+
 		final ChartPanel tempPanel = new ChartPanel(temperatura(), true, true, true, true, true);
 		tempPanel.setPreferredSize(new java.awt.Dimension(700, 270));
 
@@ -77,12 +79,12 @@ public class HistogramTests extends JDialog {
 		tabbedPane.add("Pontuação da comida", foodPoints);
 		tabbedPane.add("Número de paredes", numberParedes);
 		tabbedPane.add("Número de inimigos", numberInimigos);
-		tabbedPane.add("Posição da comida", posicaoComidas);		
+		tabbedPane.add("Posição da comida", posicaoComidas);
 		tabbedPane.add("Temperatura", tempPanel);
-		
-				final ChartPanel posParedesX = new ChartPanel(posicaoParedeX(), true, true, true, true, true);
-				posParedesX.setPreferredSize(new java.awt.Dimension(700, 270));
-				tabbedPane.add("Posição das paredes", posParedesX);
+
+		final ChartPanel posParedesX = new ChartPanel(posicaoParedeX(), true, true, true, true, true);
+		posParedesX.setPreferredSize(new java.awt.Dimension(700, 270));
+		tabbedPane.add("Posição das paredes", posParedesX);
 	}
 
 	public JFreeChart temperatura() {
@@ -142,8 +144,8 @@ public class HistogramTests extends JDialog {
 
 		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
-		return new JFreeChart("Posição das paredes em x (igual em y) (10.000.000 amostras)", JFreeChart.DEFAULT_TITLE_FONT,
-				plot, true);
+		return new JFreeChart("Posição das paredes em x (igual em y) (10.000.000 amostras)",
+				JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
 
 	public XYDataset getDatasetPosParedes() {
@@ -176,7 +178,8 @@ public class HistogramTests extends JDialog {
 		final ValueAxis y = new NumberAxis("Frequência relativa");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 
-		return new JFreeChart("Pontuação das comidas (1.000.000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("Pontuação das comidas (1.000.000 de amostras)", JFreeChart.DEFAULT_TITLE_FONT, plot,
+				true);
 	}
 
 	public JFreeChart numberParedes() {
@@ -214,8 +217,8 @@ public class HistogramTests extends JDialog {
 		final ValueAxis y = new NumberAxis("Frequência relativa");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 
-		return new JFreeChart("Número de inimigos (1.000.000 de amostras, situação inicial)", JFreeChart.DEFAULT_TITLE_FONT,
-				plot, true);
+		return new JFreeChart("Número de inimigos (1.000.000 de amostras, situação inicial)",
+				JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
 
 	public JFreeChart posicaoComida() {
@@ -234,7 +237,8 @@ public class HistogramTests extends JDialog {
 		final ValueAxis y = new NumberAxis("Frequência relativa");
 		final XYPlot plot = new XYPlot(datasetHistogram, x, y, renderer1);
 
-		return new JFreeChart("Posição da comida em X (igual para Y) (1.000.000 de amostras) - arredondado para múltiplos de 20",
+		return new JFreeChart(
+				"Posição da comida em X (igual para Y) (1.000.000 de amostras) - arredondado para múltiplos de 20",
 				JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
 

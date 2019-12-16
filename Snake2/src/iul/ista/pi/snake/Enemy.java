@@ -10,8 +10,7 @@ public class Enemy {
 	private static final int NUM_MOVIMENTOS = 4;
 	private static double probabilidade_sim = 0.1;
 
-	private Image img = new ImageIcon("resources/enemy.png").getImage();
-
+	private Image img;
 	private int x;
 	private int y;
 	private int contador_direcoes;
@@ -20,6 +19,8 @@ public class Enemy {
 	public Enemy(Comida c) {
 		this.x = c.getX() - DESLOCAMENTO;
 		this.y = c.getY() - DESLOCAMENTO;
+		img = new ImageIcon(getClass().getClassLoader().getResource("enemy.png")).getImage();
+
 	}
 
 	public void move() {
@@ -52,6 +53,10 @@ public class Enemy {
 		if (probabilidade_sim < 1)
 			probabilidade_sim += 0.1;
 		System.out.println("Probabilidade Inimigo: " + probabilidade_sim);
+	}
+	
+	public static double getProbabilidade_sim() {
+		return probabilidade_sim;
 	}
 	
 	public static boolean geraInimigo() {

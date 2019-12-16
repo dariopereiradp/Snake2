@@ -6,13 +6,14 @@ import javax.swing.ImageIcon;
 
 public class Parede {
 
-	private Image img = new ImageIcon("resources/wall.png").getImage();
+	private Image img;
 
 	private int x;
 	private int y;
 
 	public Parede() {
 		generatePosition();
+		img = new ImageIcon(getClass().getClassLoader().getResource("wall.png")).getImage();
 	}
 
 	public Image getImg() {
