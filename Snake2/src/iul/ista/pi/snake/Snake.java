@@ -232,6 +232,7 @@ public class Snake extends JFrame implements Observer {
 
 	public void open() {
 		JOptionPane.showMessageDialog(this, "Pressiona 'OK' para iniciar!");
+		board.restart();
 		setVisible(true);
 	}
 }
